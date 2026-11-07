@@ -124,6 +124,25 @@
     </div>
   </section>
 
+  <section class="block" aria-labelledby="dfr-h-why">
+    <div class="block__rail">
+      <h2 id="dfr-h-why">What goes with it${DOT}</h2>
+      <p>The 400 counties compared on nine measures from the federal institute for regional research (BBSR). East and west are compared separately: the vote and most of the measures differ so much between the two that a single comparison would mostly show the gap between them.</p>
+      <p>In 2025 one pattern held in east and west alike: the fewer people with a university degree, the stronger the far right (&rho; &minus;0.64 in the west, &minus;0.65 in the east; in 2017 only &minus;0.19 and &minus;0.16). It was also stronger where few young women live. In the east it did best where the population is older and shrinking, where industry jobs are common and where few foreign nationals live. Unemployment hardly goes with it in either part of the country.</p>
+      <p>These are patterns across counties, not causes, and they say nothing about how any one person votes.</p>
+    </div>
+    <div class="block__body">
+      <div class="filters">
+        <div class="seg dfr-years" id="dfr-ind" role="group" aria-label="Measure"></div>
+        <div class="seg dfr-years" id="dfr-cyear" role="group" aria-label="Federal election"></div>
+      </div>
+      <div class="dfr-key"><span><i class="dfr-sw dfr-sw--red"></i>County in the east</span><span><i class="dfr-sw dfr-sw--hollow"></i>County in the west (and Berlin)</span><span><i class="dfr-ln dfr-ln--east"></i>Trend, east</span><span><i class="dfr-ln dfr-ln--west"></i>Trend, west</span></div>
+      <div class="chart" id="dfr-scatter"></div>
+      <p class="note" id="dfr-scatter-note"></p>
+      <div class="tablewrap dfr-tablewrap"><table id="dfr-corr"></table></div>
+    </div>
+  </section>
+
   <section class="block" aria-labelledby="dfr-h-parties">
     <div class="block__rail">
       <h2 id="dfr-h-parties">What counts as far right${DOT}</h2>
@@ -146,9 +165,10 @@
       <li>Brandenburg 1990 is missing from the federal compilation and comes from the Brandenburg statistical office, which groups the smallest parties under &ldquo;others&rdquo;; its far-right share is a lower bound.</li>
       <li>County maps: second votes by Landkreis and kreisfreie Stadt from the federal returning officer&rsquo;s county files, drawn on the county boundaries valid on election day. The files for 1957, 1965 and 1980 count the far-right list among &ldquo;others&rdquo;, so these elections have no map. The files for 1957&ndash;1965 leave out postal votes, and from 1990 a few postal votes could not be assigned to a county. Berlin is shown as one unit.</li>
       <li>Municipality maps: second votes from the federal returning officer&rsquo;s results by polling district (2017, 2021, 2025), added up by municipality and drawn on the municipal boundaries of election day. Where small municipalities count their postal votes together (an Amt, Verbandsgemeinde or Samtgemeinde), they are shown as one area; a few tiny municipalities whose ballots were counted with a neighbour&rsquo;s are part of the neighbour&rsquo;s area. The areas add up exactly to the official result of each state.</li>
+      <li>&ldquo;What goes with it&rdquo;: county figures from the BBSR&rsquo;s INKAR database (counties as of 31 December 2023), each from the last year before the election with figures for nearly all counties; election results put on the same counties (Berlin as one, Eisenach in the Wartburgkreis). &rho; is Spearman&rsquo;s rank correlation: 1 means the counties fall in the same order on both, &minus;1 in reverse order, 0 no relation. Trend lines are least-squares fits (on a logarithmic scale for density).</li>
       <li>Not counted: Freie Sachsen (2.2% in Saxony 2024) and other lists that none of the classifications used here covers.</li>
     </ul>
-    <p class="credit" id="dfr-credit">Election results: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/dam/jcr/a333e523-0717-42ad-a772-d5ad7e7e97cc/ltw_erg_gesamt.pdf">Ergebnisse früherer Landtagswahlen</a> (as of 13 October 2026) and <a href="https://bundeswahlleiterin.de/dam/jcr/397735e3-0585-46f6-a0b5-2c60c5b83de6/btw_ab49_gesamt.pdf">Ergebnisse früherer Bundestagswahlen</a> (June 2025), Wiesbaden; Brandenburg 1990: Landesamt f&uuml;r Datenverarbeitung und Statistik Brandenburg, <a href="https://www.statistischebibliothek.de/mir/servlets/MCRFileNodeServlet/BBHeft_derivate_00010767/SB_B7-2-1_5j-99_BBa.pdf">Statistischer Bericht B VII 2-1 5j/99</a>. Classification: <a href="https://popu-list.org">The PopuList 4.0</a> (Rooduijn et al. 2024); R. St&ouml;ss (1993), <a href="https://www.bpb.de/shop/zeitschriften/apuz/archiv/536428/rechtsextremismus-und-wahlen-in-der-bundesrepublik/">Rechtsextremismus und Wahlen in der Bundesrepublik</a>; J. Schedler (2021), <a href="https://www.bpb.de/kurz-knapp/lexika/handwoerterbuch-politisches-system/202097/extrem-rechte-parteien/">(Extrem) rechte Parteien</a>; the far-right list of <a href="https://doi.org/10.1038/s41597-025-04811-5">GERDA</a> (Heddesheimer et al. 2025) for the smallest parties. Results by county: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/weitere-ergebnisse.html">Ergebnisse nach kreisfreien St&auml;dten und Landkreisen</a> (one file per federal election, 1953&ndash;2025). County boundaries: &copy; <a href="https://www.bkg.bund.de">BKG</a> (2026) <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, VG-Hist, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg-hist.pdf">Datenquellen</a>; changed: generalised, and counties merged where the results merge them. Results by polling district: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/weitere-ergebnisse.html">Wahlbezirksstatistik</a> (2017, 2021, 2025). Municipal boundaries: &copy; <a href="https://www.bkg.bund.de">BKG</a> (2026) <a href="https://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a>, VG250, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg_nuts.pdf">Datenquellen</a>; changed: generalised, and municipalities merged where they count postal votes together.</p>
+    <p class="credit" id="dfr-credit">Election results: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/dam/jcr/a333e523-0717-42ad-a772-d5ad7e7e97cc/ltw_erg_gesamt.pdf">Ergebnisse früherer Landtagswahlen</a> (as of 13 October 2026) and <a href="https://bundeswahlleiterin.de/dam/jcr/397735e3-0585-46f6-a0b5-2c60c5b83de6/btw_ab49_gesamt.pdf">Ergebnisse früherer Bundestagswahlen</a> (June 2025), Wiesbaden; Brandenburg 1990: Landesamt f&uuml;r Datenverarbeitung und Statistik Brandenburg, <a href="https://www.statistischebibliothek.de/mir/servlets/MCRFileNodeServlet/BBHeft_derivate_00010767/SB_B7-2-1_5j-99_BBa.pdf">Statistischer Bericht B VII 2-1 5j/99</a>. Classification: <a href="https://popu-list.org">The PopuList 4.0</a> (Rooduijn et al. 2024); R. St&ouml;ss (1993), <a href="https://www.bpb.de/shop/zeitschriften/apuz/archiv/536428/rechtsextremismus-und-wahlen-in-der-bundesrepublik/">Rechtsextremismus und Wahlen in der Bundesrepublik</a>; J. Schedler (2021), <a href="https://www.bpb.de/kurz-knapp/lexika/handwoerterbuch-politisches-system/202097/extrem-rechte-parteien/">(Extrem) rechte Parteien</a>; the far-right list of <a href="https://doi.org/10.1038/s41597-025-04811-5">GERDA</a> (Heddesheimer et al. 2025) for the smallest parties. Results by county: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/weitere-ergebnisse.html">Ergebnisse nach kreisfreien St&auml;dten und Landkreisen</a> (one file per federal election, 1953&ndash;2025). County boundaries: &copy; <a href="https://www.bkg.bund.de">BKG</a> (2026) <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, VG-Hist, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg-hist.pdf">Datenquellen</a>; changed: generalised, and counties merged where the results merge them. Results by polling district: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/weitere-ergebnisse.html">Wahlbezirksstatistik</a> (2017, 2021, 2025). Municipal boundaries: &copy; <a href="https://www.bkg.bund.de">BKG</a> (2026) <a href="https://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a>, VG250, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg_nuts.pdf">Datenquellen</a>; changed: generalised, and municipalities merged where they count postal votes together. County indicators: Bundesinstitut f&uuml;r Bau-, Stadt- und Raumforschung (BBSR), Laufende Raumbeobachtung, <a href="https://www.inkar.de">INKAR 2025</a>, <a href="https://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a>.</p>
   </div>
 </footer>`;
   if (root.dataset.header === 'false') root.querySelector('.masthead').remove();
@@ -891,6 +911,133 @@
     } else start();
   }
 
+  // ---------- what goes with it: county indicators ----------
+  const WHY = { code: null, year: 2025, ind: [], rows: [], corr: [] };
+  const fmtVal = (ind, v) => {
+    if (v == null) return '–';
+    if (ind.unit.startsWith('€')) return '€' + d3.format(',.0f')(v);
+    if (ind.scale === 'log') return d3.format(',.0f')(v);
+    return f1(v) + (ind.unit.startsWith('%') || ind.unit === '%' ? '%' : '');
+  };
+  const rhoTxt = (r) => (r == null ? '–' : (r < 0 ? '−' : '') + d3.format('.2f')(Math.abs(r)));
+
+  function drawWhy(el) {
+    const W = Math.round(el.clientWidth);
+    if (!W || !WHY.ind.length) return;
+    el.querySelectorAll('svg').forEach((n) => n.remove());
+    const tip = el._tip || (el._tip = tooltip(el));
+    tip.hide();
+    const ind = WHY.ind.find((i) => i.code === WHY.code);
+    const pts = WHY.rows.filter((r) => r.y === WHY.year && r.x[ind.code] != null && (ind.scale !== 'log' || r.x[ind.code] > 0));
+    const small = W < 560;
+    const H = Math.round(Math.max(300, Math.min(W * 0.62, 480)));
+    const m = { t: 14, r: 12, b: 40, l: small ? 34 : 40 };
+    const xv = (r) => r.x[ind.code];
+    const ext = d3.extent(pts, xv);
+    const x = (ind.scale === 'log' ? d3.scaleLog() : d3.scaleLinear()).domain(ext).nice().range([m.l, W - m.r]);
+    const y = d3.scaleLinear().domain([0, Math.max(10, d3.max(pts, (r) => r.f))]).nice().range([H - m.b, m.t]);
+    const svg = d3.select(el).insert('svg', ':first-child').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img');
+    const g = svg.append('g').attr('class', 'grid');
+    const yt = y.ticks(5);
+    g.selectAll('line').data(yt).join('line').attr('x1', m.l).attr('x2', W - m.r).attr('y1', (d) => Math.round(y(d)) + 0.5).attr('y2', (d) => Math.round(y(d)) + 0.5);
+    svg.append('g').selectAll('text').data(yt).join('text').attr('class', 'tick').attr('x', m.l - 6).attr('y', (d) => y(d)).attr('dy', '0.32em')
+      .attr('text-anchor', 'end').text((d, i) => (i === yt.length - 1 ? d + '%' : d));
+    const xt = ind.scale === 'log' ? x.ticks(5).filter((d) => [10, 30, 100, 300, 1000, 3000].includes(d)) : x.ticks(small ? 4 : 6);
+    svg.append('g').selectAll('text').data(xt).join('text').attr('class', 'tick').attr('x', (d) => x(d)).attr('y', H - m.b + 16)
+      .attr('text-anchor', 'middle').text((d) => (ind.unit.startsWith('€') ? '€' + d3.format(',')(d) : d3.format(',')(d)));
+    svg.append('text').attr('class', 'axis-title').attr('x', W - m.r).attr('y', H - 4).attr('text-anchor', 'end').text(ind.name + ' (' + ind.unit + ')');
+    svg.append('text').attr('class', 'axis-title').attr('x', m.l).attr('y', m.t - 2).text('Far right, % of second votes');
+    // trend lines per region, over each region's range
+    ['west', 'east'].forEach((reg) => {
+      const c = WHY.corr.find((k) => k.y === WHY.year && k.c === ind.code && k.r === reg);
+      const own = pts.filter((r) => r.e === (reg === 'east'));
+      if (!c || c.slope == null || !own.length) return;
+      const [a, b] = d3.extent(own, xv);
+      const fx = (v) => c.intercept + c.slope * (ind.scale === 'log' ? Math.log10(v) : v);
+      const seg = d3.range(0, 21).map((i) => { const v = ind.scale === 'log' ? a * Math.pow(b / a, i / 20) : a + (b - a) * i / 20; return [x(v), y(Math.max(0, fx(v)))]; });
+      svg.append('path').attr('class', 'dfr-trend dfr-trend--' + reg).attr('d', d3.line()(seg));
+    });
+    const dots = svg.append('g').selectAll('circle').data(pts.sort((a, b) => a.e - b.e)).join('circle')
+      .attr('class', (r) => (r.e ? 'dfr-dot' : 'dfr-hollow')).attr('r', small ? 2.6 : 3.2)
+      .attr('cx', (r) => x(xv(r))).attr('cy', (r) => y(r.f));
+    const ring = svg.append('circle').attr('class', 'focus-ring').attr('r', 6).attr('visibility', 'hidden');
+    svg.append('rect').attr('class', 'overlay').attr('width', W).attr('height', H).attr('aria-hidden', 'true')
+      .on('pointermove pointerdown', (ev) => {
+        const [px, py] = d3.pointer(ev);
+        let best = null, bd = 14;
+        pts.forEach((r) => { const d = Math.hypot(x(xv(r)) - px, y(r.f) - py); if (d < bd) { bd = d; best = r; } });
+        if (!best) { tip.hide(); ring.attr('visibility', 'hidden'); return; }
+        ring.attr('visibility', 'visible').attr('cx', x(xv(best))).attr('cy', y(best.f));
+        const a = el.getBoundingClientRect(), b = svg.node().getBoundingClientRect();
+        tip.show('<p class="tt__meta">' + esc(STATES[AGS[best.k.slice(0, 2)]] || '') + '</p><p class="tt__title">' + esc(best.n) + '</p>' +
+          '<table class="tt__tab"><tbody><tr><th>Far right ' + WHY.year + '</th><td>' + pct(best.f) + '</td></tr><tr><th>' + esc(ind.short_name) +
+          ' (' + ind.data_years[String(WHY.year)] + ')</th><td>' + fmtVal(ind, xv(best)) + '</td></tr></tbody></table>', b.left - a.left + x(xv(best)), b.top - a.top + y(best.f));
+      })
+      .on('pointerleave', () => { tip.hide(); ring.attr('visibility', 'hidden'); });
+    const cw = WHY.corr.find((k) => k.y === WHY.year && k.c === ind.code && k.r === 'west');
+    const ce = WHY.corr.find((k) => k.y === WHY.year && k.c === ind.code && k.r === 'east');
+    svg.attr('aria-label', ind.name + ' and the far-right share by county, federal election ' + WHY.year + '. Rank correlation west ' + rhoTxt(cw && cw.rho) + ', east ' + rhoTxt(ce && ce.rho) + '.');
+    $('#scatter-note').textContent = ind.description + ' Figures for ' + ind.data_years[String(WHY.year)] + '. Rank correlation ρ with the far-right share: west ' +
+      rhoTxt(cw && cw.rho) + ' (' + (cw ? cw.n : 0) + ' counties), east ' + rhoTxt(ce && ce.rho) + ' (' + (ce ? ce.n : 0) + ').';
+    renderCorrTable();
+  }
+
+  function renderCorrTable() {
+    const bar = (r) => {
+      if (r == null) return '<td class="num">–</td><td></td>';
+      const w = Math.round(Math.abs(r) * 50);
+      return '<td class="num">' + rhoTxt(r) + '</td><td class="dfr-rhocell"><span class="dfr-rho"><i style="' + (r < 0 ? 'right:50%' : 'left:50%') + ';width:' + w + '%"></i></span></td>';
+    };
+    const rows = WHY.ind.map((i) => {
+      const w = WHY.corr.find((k) => k.y === WHY.year && k.c === i.code && k.r === 'west');
+      const e = WHY.corr.find((k) => k.y === WHY.year && k.c === i.code && k.r === 'east');
+      return '<tr data-code="' + i.code + '"' + (i.code === WHY.code ? ' class="is-on"' : '') + '><td>' + esc(i.name) + '</td>' + bar(w && w.rho) + bar(e && e.rho) + '</tr>';
+    });
+    $('#corr').innerHTML = '<thead><tr><th>Federal election ' + WHY.year + '</th><th class="num">West &rho;</th><th class="dfr-rhocell"></th><th class="num">East &rho;</th><th class="dfr-rhocell"></th></tr></thead><tbody>' + rows.join('') + '</tbody>';
+  }
+
+  function setupWhy(el) {
+    let started = false;
+    const start = async () => {
+      if (started) return;
+      started = true;
+      try {
+        const [ind, rows, corr] = await Promise.all([getJSON('data/indicators.json'), getJSON('data/correlates.json'), getJSON('data/correlations.json')]);
+        WHY.ind = ind; WHY.rows = rows; WHY.corr = corr;
+      } catch (err) {
+        el.insertAdjacentHTML('afterbegin', '<p class="error">' + esc(err.message) + '</p>');
+        return;
+      }
+      WHY.code = WHY.ind[0].code;
+      WHY.year = d3.max(WHY.rows, (r) => r.y);
+      const redraw = onWidth(el, () => drawWhy(el));
+      const segInd = $('#ind'), segYear = $('#cyear');
+      const pick = (seg, val, key) => seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === String(val))));
+      WHY.ind.forEach((i) => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.textContent = i.short_name; b.dataset.v = i.code;
+        b.addEventListener('click', () => { WHY.code = i.code; pick(segInd, i.code); redraw(); });
+        segInd.appendChild(b);
+      });
+      [...new Set(WHY.rows.map((r) => r.y))].sort().forEach((y) => {
+        const b = document.createElement('button');
+        b.type = 'button'; b.textContent = y; b.dataset.v = y;
+        b.addEventListener('click', () => { WHY.year = y; pick(segYear, y); redraw(); });
+        segYear.appendChild(b);
+      });
+      pick(segInd, WHY.code); pick(segYear, WHY.year);
+      $('#corr').addEventListener('click', (ev) => {
+        const tr = ev.target.closest('tr[data-code]');
+        if (!tr) return;
+        WHY.code = tr.dataset.code; pick(segInd, WHY.code); redraw();
+      });
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); start(); } }, { rootMargin: '600px 0px' });
+      io.observe(el);
+    } else start();
+  }
+
   // ---------- parties table ----------
   function renderParties(list) {
     const short = { populist4: 'PopuList 4.0', stoess1993: 'Stöss 1993', schedler2021: 'Schedler 2021', gerda2025: 'GERDA' };
@@ -931,6 +1078,7 @@
     onWidth($('#panels'), () => drawPanels($('#panels')));
     setupMap($('#map'));
     setupTowns($('#tmap'));
+    setupWhy($('#scatter'));
   }
   boot();
 })();

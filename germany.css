@@ -351,3 +351,17 @@
 .dfr .dfr-countylines { fill: none; stroke: var(--ink); stroke-width: 0.4px; stroke-opacity: 0.25; pointer-events: none; }
 .dfr .dfr-tmap .focus-ring { stroke-width: 1.75px; }
 @container dfr (max-width: 520px) { .dfr .dfr-zoom { margin-left: 0; } }
+/* what goes with it */
+.dfr .dfr-hollow { fill: var(--paper); fill-opacity: 0.6; stroke: var(--red); stroke-width: 1px; stroke-opacity: 0.75; }
+.dfr .dfr-sw--hollow { background: var(--paper); box-shadow: inset 0 0 0 1.25px var(--red); border-radius: 50%; }
+.dfr .dfr-trend { fill: none; stroke: var(--red); stroke-width: 2px; pointer-events: none; }
+.dfr .dfr-trend--west { stroke-dasharray: 5 4; }
+.dfr .dfr-ln { display: inline-block; width: 18px; height: 0; border-top: 2px solid var(--red); }
+.dfr .dfr-ln--west { border-top-style: dashed; }
+.dfr #dfr-corr tbody tr { cursor: pointer; }
+.dfr #dfr-corr tbody tr:hover td, .dfr #dfr-corr tbody tr.is-on td { background: color-mix(in srgb, var(--rule) 45%, var(--paper)); }
+.dfr #dfr-corr tbody tr.is-on td:first-child { font-weight: 500; }
+.dfr .dfr-rhocell { width: 26%; min-width: 5rem; }
+.dfr .dfr-rho { position: relative; display: block; height: 10px; background: linear-gradient(to right, transparent calc(50% - 0.5px), var(--muted) calc(50% - 0.5px), var(--muted) calc(50% + 0.5px), transparent calc(50% + 0.5px)); }
+.dfr .dfr-rho i { position: absolute; top: 1px; bottom: 1px; background: var(--muted); border-radius: 1px; }
+@container dfr (max-width: 520px) { .dfr .dfr-rhocell { display: none; } }
