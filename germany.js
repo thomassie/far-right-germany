@@ -102,6 +102,28 @@
     </div>
   </section>
 
+  <section class="block" aria-labelledby="dfr-h-towns">
+    <div class="block__rail">
+      <h2 id="dfr-h-towns">Town by town${DOT}</h2>
+      <p>The federal elections of 2017, 2021 and 2025 in all of Germany&rsquo;s some 10,700 municipalities. Many small municipalities count their postal votes together; they are shown as one area, so that every area holds all of its votes.</p>
+      <p>In 2025 the AfD won more than half of the second votes in 100 areas, all in the east, led by Schnaudertal in Saxony-Anhalt (58.0%); in 2021 it had passed 40% in 18. In the west its strongest areas lie in the Bavarian Forest and in parts of Baden-W&uuml;rttemberg, none above 40%.</p>
+    </div>
+    <div class="block__body">
+      <div class="seg dfr-years" id="dfr-tyear" role="group" aria-label="Federal election"></div>
+      <div class="dfr-tools">
+        <label class="dfr-find" for="dfr-tfind">Find a municipality</label>
+        <input id="dfr-tfind" class="dfr-search" type="search" list="dfr-tnames" autocomplete="off" placeholder="e.g. Görlitz">
+        <datalist id="dfr-tnames"></datalist>
+        <span class="dfr-zoom" role="group" aria-label="Zoom">
+          <button type="button" id="dfr-tzin" aria-label="Zoom in">+</button><button type="button" id="dfr-tzout" aria-label="Zoom out">&minus;</button><button type="button" id="dfr-tzreset">Reset</button>
+        </span>
+      </div>
+      <div class="dfr-mapkey" id="dfr-tkey"></div>
+      <div class="chart dfr-map dfr-tmap" id="dfr-tmap"></div>
+      <p class="note" id="dfr-tmap-note"></p>
+    </div>
+  </section>
+
   <section class="block" aria-labelledby="dfr-h-parties">
     <div class="block__rail">
       <h2 id="dfr-h-parties">What counts as far right${DOT}</h2>
@@ -123,9 +145,10 @@
       <li>Baden-W&uuml;rttemberg was formed in 1952; its forerunners W&uuml;rttemberg-Baden, Baden and W&uuml;rttemberg-Hohenzollern (1946&ndash;1950) are shown under it. Berlin 1950&ndash;1989 means West Berlin. Berlin&rsquo;s 2021 election was repeated in full in February 2023; the repeat is shown.</li>
       <li>Brandenburg 1990 is missing from the federal compilation and comes from the Brandenburg statistical office, which groups the smallest parties under &ldquo;others&rdquo;; its far-right share is a lower bound.</li>
       <li>County maps: second votes by Landkreis and kreisfreie Stadt from the federal returning officer&rsquo;s county files, drawn on the county boundaries valid on election day. The files for 1957, 1965 and 1980 count the far-right list among &ldquo;others&rdquo;, so these elections have no map. The files for 1957&ndash;1965 leave out postal votes, and from 1990 a few postal votes could not be assigned to a county. Berlin is shown as one unit.</li>
+      <li>Municipality maps: second votes from the federal returning officer&rsquo;s results by polling district (2017, 2021, 2025), added up by municipality and drawn on the municipal boundaries of election day. Where small municipalities count their postal votes together (an Amt, Verbandsgemeinde or Samtgemeinde), they are shown as one area; a few tiny municipalities whose ballots were counted with a neighbour&rsquo;s are part of the neighbour&rsquo;s area. The areas add up exactly to the official result of each state.</li>
       <li>Not counted: Freie Sachsen (2.2% in Saxony 2024) and other lists that none of the classifications used here covers.</li>
     </ul>
-    <p class="credit" id="dfr-credit">Election results: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/dam/jcr/a333e523-0717-42ad-a772-d5ad7e7e97cc/ltw_erg_gesamt.pdf">Ergebnisse früherer Landtagswahlen</a> (as of 13 October 2026) and <a href="https://bundeswahlleiterin.de/dam/jcr/397735e3-0585-46f6-a0b5-2c60c5b83de6/btw_ab49_gesamt.pdf">Ergebnisse früherer Bundestagswahlen</a> (June 2025), Wiesbaden; Brandenburg 1990: Landesamt f&uuml;r Datenverarbeitung und Statistik Brandenburg, <a href="https://www.statistischebibliothek.de/mir/servlets/MCRFileNodeServlet/BBHeft_derivate_00010767/SB_B7-2-1_5j-99_BBa.pdf">Statistischer Bericht B VII 2-1 5j/99</a>. Classification: <a href="https://popu-list.org">The PopuList 4.0</a> (Rooduijn et al. 2024); R. St&ouml;ss (1993), <a href="https://www.bpb.de/shop/zeitschriften/apuz/archiv/536428/rechtsextremismus-und-wahlen-in-der-bundesrepublik/">Rechtsextremismus und Wahlen in der Bundesrepublik</a>; J. Schedler (2021), <a href="https://www.bpb.de/kurz-knapp/lexika/handwoerterbuch-politisches-system/202097/extrem-rechte-parteien/">(Extrem) rechte Parteien</a>; the far-right list of <a href="https://doi.org/10.1038/s41597-025-04811-5">GERDA</a> (Heddesheimer et al. 2025) for the smallest parties. Results by county: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/weitere-ergebnisse.html">Ergebnisse nach kreisfreien St&auml;dten und Landkreisen</a> (one file per federal election, 1953&ndash;2025). County boundaries: &copy; <a href="https://www.bkg.bund.de">BKG</a> (2026) <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, VG-Hist, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg-hist.pdf">Datenquellen</a>; changed: generalised, and counties merged where the results merge them.</p>
+    <p class="credit" id="dfr-credit">Election results: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/dam/jcr/a333e523-0717-42ad-a772-d5ad7e7e97cc/ltw_erg_gesamt.pdf">Ergebnisse früherer Landtagswahlen</a> (as of 13 October 2026) and <a href="https://bundeswahlleiterin.de/dam/jcr/397735e3-0585-46f6-a0b5-2c60c5b83de6/btw_ab49_gesamt.pdf">Ergebnisse früherer Bundestagswahlen</a> (June 2025), Wiesbaden; Brandenburg 1990: Landesamt f&uuml;r Datenverarbeitung und Statistik Brandenburg, <a href="https://www.statistischebibliothek.de/mir/servlets/MCRFileNodeServlet/BBHeft_derivate_00010767/SB_B7-2-1_5j-99_BBa.pdf">Statistischer Bericht B VII 2-1 5j/99</a>. Classification: <a href="https://popu-list.org">The PopuList 4.0</a> (Rooduijn et al. 2024); R. St&ouml;ss (1993), <a href="https://www.bpb.de/shop/zeitschriften/apuz/archiv/536428/rechtsextremismus-und-wahlen-in-der-bundesrepublik/">Rechtsextremismus und Wahlen in der Bundesrepublik</a>; J. Schedler (2021), <a href="https://www.bpb.de/kurz-knapp/lexika/handwoerterbuch-politisches-system/202097/extrem-rechte-parteien/">(Extrem) rechte Parteien</a>; the far-right list of <a href="https://doi.org/10.1038/s41597-025-04811-5">GERDA</a> (Heddesheimer et al. 2025) for the smallest parties. Results by county: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/weitere-ergebnisse.html">Ergebnisse nach kreisfreien St&auml;dten und Landkreisen</a> (one file per federal election, 1953&ndash;2025). County boundaries: &copy; <a href="https://www.bkg.bund.de">BKG</a> (2026) <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, VG-Hist, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg-hist.pdf">Datenquellen</a>; changed: generalised, and counties merged where the results merge them. Results by polling district: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/weitere-ergebnisse.html">Wahlbezirksstatistik</a> (2017, 2021, 2025). Municipal boundaries: &copy; <a href="https://www.bkg.bund.de">BKG</a> (2026) <a href="https://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a>, VG250, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg_nuts.pdf">Datenquellen</a>; changed: generalised, and municipalities merged where they count postal votes together.</p>
   </div>
 </footer>`;
   if (root.dataset.header === 'false') root.querySelector('.masthead').remove();
@@ -559,7 +582,10 @@
 
   const AGS = { '01': 'SH', '02': 'HH', '03': 'NI', '04': 'HB', '05': 'NW', '06': 'HE', '07': 'RP', '08': 'BW', '09': 'BY',
     10: 'SL', 11: 'BE', 12: 'BB', 13: 'MV', 14: 'SN', 15: 'ST', 16: 'TH' };
-  const BINS = [1, 2, 5, 10, 20, 30, 40];             // far-right share, %: classes c1 (<1) ... c8 (40 and more)
+  const BINS = [1, 2, 5, 10, 20, 30, 40, 50];         // far-right share, %: classes c1 (<1) ... c9 (50 and more)
+  const BIN_LABELS = ['<1', '1–2', '2–5', '5–10', '10–20', '20–30', '30–40', '40–50', '50+'];
+  const rampKey = () => '<div class="dfr-ramp" aria-label="Far-right share of the second vote, percent">' +
+    BIN_LABELS.map((l, i) => '<span><i class="dfr-c' + (i + 1) + '"></i>' + l + '</span>').join('') + '<span class="dfr-ramp__unit">%</span></div>';
   const binOf = (v) => (v == null ? 0 : 1 + d3.bisectRight(BINS, v));
   const MAP = { topo: null, reader: null, rows: new Map(), files: [], year: null, cache: new Map() };
 
@@ -659,9 +685,7 @@
   }
 
   function renderMapKey() {
-    const labels = ['<1', '1–2', '2–5', '5–10', '10–20', '20–30', '30–40', '40+'];
-    $('#mapkey').innerHTML = '<div class="dfr-ramp" aria-label="Far-right share of the second vote, percent">' +
-      labels.map((l, i) => '<span><i class="dfr-c' + (i + 1) + '"></i>' + l + '</span>').join('') + '<span class="dfr-ramp__unit">%</span></div>' +
+    $('#mapkey').innerHTML = rampKey() +
       '<div class="dfr-key"><span><i class="dfr-sw dfr-sw--blank"></i>No far-right list</span><span><i class="dfr-sw dfr-sw--none"></i>No free elections</span>' +
       '<span><i class="dfr-sw dfr-sw--novote"></i>Not in federal elections</span></div>';
   }
@@ -706,6 +730,167 @@
     } else start();
   }
 
+  // ---------- municipality map ----------
+  const TOWN = { year: null, years: [], cache: new Map(), view: null };
+
+  async function townData(year) {
+    if (!TOWN.cache.has(year)) {
+      const [topo, rows] = await Promise.all([getJSON('data/municipalities_' + year + '.topo.json'), getJSON('data/municipalities_' + year + '.json')]);
+      const reader = topoReader(topo);
+      const obj = topo.objects.units;
+      const byId = new Map(rows.map((r) => [r.u, r]));
+      const feats = reader.features(obj);
+      feats.forEach((f) => { f.properties.r = byId.get(f.id) || null; });
+      TOWN.cache.set(year, {
+        feats,
+        states: reader.mesh(obj, (a, b) => a !== b && a.properties && b.properties && a.properties.s !== b.properties.s),
+        counties: reader.mesh(obj, (a, b) => a !== b && a.properties && b.properties && a.properties.c !== b.properties.c && a.properties.s === b.properties.s),
+        outline: reader.mesh(obj, (a, b) => a === b),
+        rows,
+      });
+    }
+    return TOWN.cache.get(year);
+  }
+
+  function townTip(f, year) {
+    const r = f.properties.r;
+    if (!r) return '<p class="tt__meta">Federal election ' + year + '</p><p class="tt__title">' +
+      (f.id === 'novoters' ? 'Unincorporated area' : 'No result of its own') + '</p><p class="tt__note">' +
+      (f.id === 'novoters' ? 'No inhabitants entitled to vote (forest, lake or military area).' : 'Its ballots were counted with a neighbouring municipality’s.') + '</p>';
+    let html = '<p class="tt__meta">Federal election ' + year + ' · ' + esc(STATES[AGS[r.u.slice(0, 2)]] || '') + '</p><p class="tt__title">' + esc(r.n) + '</p>';
+    if (r.m > 1) {
+      const names = r.ms ? r.ms.split('|') : [];
+      html += '<p class="tt__note">' + (r.g ? r.m + ' municipalities that count their postal votes together' : r.m + ' municipalities counted together') +
+        (names.length ? ': ' + esc(names.slice(0, 8).join(', ')) + (names.length > 8 ? ' and ' + (names.length - 8) + ' more' : '') : '') + '.</p>';
+    }
+    html += '<table class="tt__tab"><tbody>';
+    const lists = r.ps ? r.ps.split('|').map((x) => { const i = x.lastIndexOf(':'); return [x.slice(0, i), +x.slice(i + 1)]; }) : [];
+    if (lists.length) {
+      lists.forEach(([l, v]) => { html += '<tr><th>' + esc(l) + '</th><td>' + pct(v) + '</td></tr>'; });
+      if (lists.length > 1) html += '<tr class="tt__sub"><th>Far right together</th><td>' + pct(r.f) + '</td></tr>';
+    } else html += '<tr><th>Far right</th><td>no votes</td></tr>';
+    html += '<tr class="tt__sub"><th>Valid second votes</th><td>' + d3.format(',')(r.v) + '</td></tr></tbody></table>';
+    return html;
+  }
+
+  function drawTowns(el, data) {
+    const W = Math.round(el.clientWidth);
+    if (!W || !data) return;
+    el.querySelectorAll('svg').forEach((n) => n.remove());
+    const tip = el._tip || (el._tip = tooltip(el));
+    tip.hide();
+    const all = { type: 'FeatureCollection', features: data.feats };
+    const probe = d3.geoIdentity().reflectY(true).fitWidth(W, all);
+    const b = d3.geoPath(probe).bounds(all);
+    const H = Math.round(Math.min(b[1][1] - b[0][1], Math.max(440, Math.min(W * 1.35, 780))));
+    const proj = d3.geoIdentity().reflectY(true).fitExtent([[2, 2], [W - 2, H - 2]], all);
+    const path = d3.geoPath(proj);
+    const svg = d3.select(el).insert('svg', ':first-child').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img');
+    const g = svg.append('g');
+    const shapes = g.append('g').selectAll('path').data(data.feats).join('path')
+      .attr('class', (f) => (f.id === 'novoters' ? 'dfr-county dfr-c0 dfr-nov' : f.id === 'noresult' ? 'dfr-county dfr-cx' :
+        'dfr-county dfr-town dfr-c' + (f.properties.r && f.properties.r.ps ? binOf(f.properties.r.f) : 0)))
+      .attr('d', path);
+    g.append('path').attr('class', 'dfr-countylines').attr('d', path(data.counties));
+    g.append('path').attr('class', 'dfr-statelines').attr('d', path(data.states));
+    g.append('path').attr('class', 'dfr-outline').attr('d', path(data.outline));
+    const hl = g.append('path').attr('class', 'focus-ring');
+    const show = (ev, f) => {
+      hl.attr('d', path(f)).attr('visibility', 'visible');
+      const [px, py] = d3.pointer(ev, el);
+      tip.show(townTip(f, TOWN.year), px, py);
+    };
+    shapes.on('pointermove pointerdown', show);
+    svg.on('pointerleave', () => { tip.hide(); hl.attr('visibility', 'hidden'); });
+    // zoom: buttons, pinch, ctrl/cmd + wheel, drag once zoomed in; one finger still scrolls the page
+    const zoom = d3.zoom().scaleExtent([1, 32]).translateExtent([[0, 0], [W, H]])
+      .filter((ev) => (ev.type === 'wheel' ? ev.ctrlKey || ev.metaKey : ev.type === 'touchstart' ? ev.touches.length > 1 : !ev.button))
+      .on('zoom', (ev) => { g.attr('transform', ev.transform); svg.classed('is-zoomed', ev.transform.k > 1.01); tip.hide(); });
+    svg.call(zoom).on('dblclick.zoom', null);
+    const zoomTo = (f) => {
+      const [[x0, y0], [x1, y1]] = path.bounds(f);
+      const k = Math.min(24, 0.5 / Math.max((x1 - x0) / W, (y1 - y0) / H));
+      const t = d3.zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
+      svg.transition().duration(600).call(zoom.transform, t).on('end', () => {
+        hl.attr('d', path(f)).attr('visibility', 'visible');
+        const c = path.centroid(f);
+        const p = t.apply(c);
+        tip.show(townTip(f, TOWN.year), p[0], p[1]);
+      });
+    };
+    TOWN.view = { zoom, svg, zoomTo, data };
+
+    const vals = data.rows;
+    const top = vals.reduce((a, c) => (c.f > a.f ? c : a));
+    const own = vals.filter((r) => r.m === 1).length, groups = vals.filter((r) => r.g), inGroups = d3.sum(groups, (r) => r.m);
+    const cut = 40;
+    const over = vals.filter((r) => r.f >= cut);
+    const east = over.filter((r) => +r.u.slice(0, 2) >= 12).length;
+    $('#tmap-note').textContent = vals.length.toLocaleString('en') + ' areas: ' + own.toLocaleString('en') + ' municipalities with results of their own and ' +
+      groups.length + ' groups of ' + inGroups.toLocaleString('en') + ' small municipalities that count postal votes together. Highest: ' + top.n + ', ' + f1(top.f) + '%. ' +
+      (over.length ? cut + '% or more in ' + over.length + ' areas' + (east === over.length ? ', all in the east' : ', ' + east + ' of them in the east') + '. ' : '') +
+      'Zoom with the buttons, by pinching, or with Ctrl or ⌘ and the scroll wheel.';
+    svg.attr('aria-label', 'Map of the far right’s share of the second vote by municipality, federal election ' + TOWN.year + '. Highest: ' + top.n + ', ' + f1(top.f) + '%.');
+  }
+
+  function setupTowns(el) {
+    let started = false;
+    const years = [2017, 2021, 2025];
+    TOWN.year = years[years.length - 1];
+    let redraw = null;
+    const render = async () => {
+      let data;
+      try { data = await townData(TOWN.year); } catch (err) {
+        el.insertAdjacentHTML('afterbegin', '<p class="error">' + esc(err.message) + '</p>');
+        return;
+      }
+      const names = new Map();
+      data.rows.forEach((r) => {
+        names.set(r.n, r.u);
+        if (r.ms) r.ms.split('|').forEach((n) => { if (!names.has(n)) names.set(n, r.u); });
+      });
+      TOWN.names = names;
+      $('#tnames').innerHTML = [...names.keys()].sort((a, b) => a.localeCompare(b, 'de')).map((n) => '<option value="' + esc(n) + '">').join('');
+      if (!redraw) redraw = onWidth(el, () => drawTowns(el, TOWN.cache.get(TOWN.year)));
+      else redraw();
+    };
+    const start = () => {
+      if (started) return;
+      started = true;
+      const seg = $('#tyear');
+      years.forEach((y) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = y;
+        b.setAttribute('aria-pressed', String(y === TOWN.year));
+        b.addEventListener('click', () => {
+          if (TOWN.year === y) return;
+          TOWN.year = y;
+          seg.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+          render();
+        });
+        seg.appendChild(b);
+      });
+      $('#tkey').innerHTML = rampKey() +
+        '<div class="dfr-key"><span><i class="dfr-sw dfr-sw--novote"></i>No result of its own</span><span><i class="dfr-sw dfr-sw--blank"></i>No voters</span></div>';
+      const find = $('#tfind');
+      find.addEventListener('change', () => {
+        const u = TOWN.names && TOWN.names.get(find.value);
+        if (!u || !TOWN.view) return;
+        const f = TOWN.view.data.feats.find((x) => x.id === u);
+        if (f) TOWN.view.zoomTo(f);
+      });
+      $('#tzin').addEventListener('click', () => TOWN.view && TOWN.view.svg.transition().duration(300).call(TOWN.view.zoom.scaleBy, 2));
+      $('#tzout').addEventListener('click', () => TOWN.view && TOWN.view.svg.transition().duration(300).call(TOWN.view.zoom.scaleBy, 0.5));
+      $('#tzreset').addEventListener('click', () => TOWN.view && TOWN.view.svg.transition().duration(400).call(TOWN.view.zoom.transform, d3.zoomIdentity));
+      render();
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); start(); } }, { rootMargin: '600px 0px' });
+      io.observe(el);
+    } else start();
+  }
+
   // ---------- parties table ----------
   function renderParties(list) {
     const short = { populist4: 'PopuList 4.0', stoess1993: 'Stöss 1993', schedler2021: 'Schedler 2021', gerda2025: 'GERDA' };
@@ -745,6 +930,7 @@
     onWidth($('#parl'), () => drawParl($('#parl')));
     onWidth($('#panels'), () => drawPanels($('#panels')));
     setupMap($('#map'));
+    setupTowns($('#tmap'));
   }
   boot();
 })();

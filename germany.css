@@ -311,7 +311,8 @@
 .dfr .dfr-c5 { --c: color-mix(in oklab, var(--red) 64%, var(--paper)); }
 .dfr .dfr-c6 { --c: color-mix(in oklab, var(--red) 82%, var(--paper)); }
 .dfr .dfr-c7 { --c: var(--red); }
-.dfr .dfr-c8 { --c: color-mix(in oklab, var(--red) 58%, var(--ink)); }
+.dfr .dfr-c8 { --c: color-mix(in oklab, var(--red) 62%, var(--ink)); }
+.dfr .dfr-c9 { --c: color-mix(in oklab, var(--red) 34%, var(--ink)); }
 .dfr .dfr-cx { --c: color-mix(in srgb, var(--rule) 45%, var(--paper)); }
 .dfr .dfr-map { max-width: 760px; }
 .dfr .dfr-map svg path { fill-rule: evenodd; }
@@ -330,3 +331,23 @@
 .dfr .dfr-ramp i { display: inline-block; width: 14px; height: 14px; border-radius: 2px; background: var(--c); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent); }
 .dfr .dfr-sw--blank { background: var(--paper); box-shadow: inset 0 0 0 1px var(--rule); }
 .dfr .dfr-sw--novote { background: color-mix(in srgb, var(--rule) 70%, var(--paper)); }
+/* municipality map */
+.dfr .dfr-search {
+  font: inherit; font-family: var(--font-support); font-size: 0.9375rem; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--muted); border-radius: 999px; padding: 0.35rem 0.9rem;
+  width: 15rem; max-width: 100%; }
+.dfr .dfr-search:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.dfr .dfr-zoom { display: inline-flex; gap: 0.35rem; margin-left: auto; }
+.dfr .dfr-zoom button {
+  font: inherit; font-family: var(--font-support); font-size: 0.875rem; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 999px; min-width: 2.25rem; height: 2.25rem; padding: 0 0.7rem; cursor: pointer; }
+.dfr .dfr-zoom button:hover { border-color: var(--muted); }
+.dfr .dfr-zoom button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+.dfr .dfr-tmap svg { touch-action: pan-y; cursor: default; }
+.dfr .dfr-tmap svg.is-zoomed { cursor: grab; }
+.dfr .dfr-tmap path { vector-effect: non-scaling-stroke; }
+.dfr .dfr-tmap .dfr-county { stroke-width: 0.25px; }
+.dfr .dfr-tmap .dfr-nov { stroke: none; }
+.dfr .dfr-countylines { fill: none; stroke: var(--ink); stroke-width: 0.4px; stroke-opacity: 0.25; pointer-events: none; }
+.dfr .dfr-tmap .focus-ring { stroke-width: 1.75px; }
+@container dfr (max-width: 520px) { .dfr .dfr-zoom { margin-left: 0; } }
