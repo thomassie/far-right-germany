@@ -298,3 +298,35 @@
 .dfr .dfr-tablewrap { max-height: none; }
 .dfr .dfr-tablewrap td b { font-weight: 500; }
 .dfr .dfr-at { color: var(--muted); font-size: 0.75rem; }
+/* county map */
+.dfr .dfr-years { background: repeating-linear-gradient(to bottom, transparent 0 35px, var(--rule) 35px 36px); }
+.dfr .dfr-years button { height: 36px; padding: 0 0.55rem; font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
+.dfr .dfr-years button.is-off { color: color-mix(in srgb, var(--muted) 55%, var(--paper)); text-decoration: line-through; text-decoration-thickness: 1px; }
+.dfr .dfr-years button.is-off[aria-pressed="true"] { color: var(--muted); }
+.dfr .dfr-c0 { --c: var(--paper); }
+.dfr .dfr-c1 { --c: color-mix(in oklab, var(--red) 9%, var(--paper)); }
+.dfr .dfr-c2 { --c: color-mix(in oklab, var(--red) 20%, var(--paper)); }
+.dfr .dfr-c3 { --c: color-mix(in oklab, var(--red) 33%, var(--paper)); }
+.dfr .dfr-c4 { --c: color-mix(in oklab, var(--red) 48%, var(--paper)); }
+.dfr .dfr-c5 { --c: color-mix(in oklab, var(--red) 64%, var(--paper)); }
+.dfr .dfr-c6 { --c: color-mix(in oklab, var(--red) 82%, var(--paper)); }
+.dfr .dfr-c7 { --c: var(--red); }
+.dfr .dfr-c8 { --c: color-mix(in oklab, var(--red) 58%, var(--ink)); }
+.dfr .dfr-cx { --c: color-mix(in srgb, var(--rule) 45%, var(--paper)); }
+.dfr .dfr-map { max-width: 760px; }
+.dfr .dfr-map svg path { fill-rule: evenodd; }
+.dfr .dfr-county { fill: var(--c); stroke: var(--paper); stroke-width: 0.35px; stroke-linejoin: round; }
+.dfr .dfr-county.dfr-c0 { stroke: var(--rule); }
+.dfr .dfr-novote { fill: color-mix(in srgb, var(--rule) 70%, var(--paper)); stroke: none; }
+.dfr .dfr-map .dfr-nofree { stroke: none; }
+.dfr .dfr-statelines { fill: none; stroke: var(--ink); stroke-width: 0.8px; stroke-opacity: 0.55; stroke-linejoin: round; pointer-events: none; }
+.dfr .dfr-outline { fill: none; stroke: var(--ink); stroke-width: 0.9px; stroke-opacity: 0.8; stroke-linejoin: round; pointer-events: none; }
+.dfr .dfr-map .focus-ring { stroke-width: 1.75px; stroke-linejoin: round; }
+.dfr .dfr-map__msg { position: absolute; left: 0; right: 0; top: 38%; margin-inline: auto; max-width: 22rem; padding: 0.75rem 1rem;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; font-family: var(--font-support); font-size: 0.875rem; text-align: center; }
+.dfr .dfr-mapkey { display: grid; gap: 0.5rem; }
+.dfr .dfr-ramp { display: flex; flex-wrap: wrap; align-items: center; gap: 0.25rem 0.7rem; font-family: var(--font-support); font-size: 0.8125rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.dfr .dfr-ramp span { display: inline-flex; align-items: center; gap: 0.3rem; }
+.dfr .dfr-ramp i { display: inline-block; width: 14px; height: 14px; border-radius: 2px; background: var(--c); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 10%, transparent); }
+.dfr .dfr-sw--blank { background: var(--paper); box-shadow: inset 0 0 0 1px var(--rule); }
+.dfr .dfr-sw--novote { background: color-mix(in srgb, var(--rule) 70%, var(--paper)); }

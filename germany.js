@@ -6,7 +6,8 @@
    data-header     "false" leaves out the built-in title (when the host page has its own)
    data-layout     "standalone" adds the page's own width and side gutters
 
-   Reads data/*.json, written by pipeline/run.py from mart.de_* (MotherDuck). No database access here.
+   Reads data/*.json, written by pipeline/run.py from mart.de_* (MotherDuck), and data/counties.topo.json
+   (county boundaries of each federal election, BKG VG-Hist). No database access here.
    Styles: germany.css (scoped under .dfr); colours come from the host's tokens or theme.css.
    One meaning per colour: red = far right, ink = the national (federal) result. */
 (function () {
@@ -87,6 +88,20 @@
     </div>
   </section>
 
+  <section class="block" aria-labelledby="dfr-h-map">
+    <div class="block__rail">
+      <h2 id="dfr-h-map">County by county${DOT}</h2>
+      <p>The far right&rsquo;s share of the second vote in every county in federal elections since 1953, within the county boundaries of the day.</p>
+      <p>The strongholds have moved: in 1953 the DRP did best in Lower Saxony and Rhenish Hesse, in 1969 the NPD in the rural Palatinate, Rhenish Hesse and Franconia, in 1990 the Republikaner in Bavaria. Since 2005 the strongest counties have all been in the east, mostly in Saxony and Thuringia.</p>
+    </div>
+    <div class="block__body">
+      <div class="seg dfr-years" id="dfr-year" role="group" aria-label="Federal election"></div>
+      <div class="dfr-mapkey" id="dfr-mapkey"></div>
+      <div class="chart dfr-map" id="dfr-map"></div>
+      <p class="note" id="dfr-map-note"></p>
+    </div>
+  </section>
+
   <section class="block" aria-labelledby="dfr-h-parties">
     <div class="block__rail">
       <h2 id="dfr-h-parties">What counts as far right${DOT}</h2>
@@ -107,9 +122,10 @@
       <li>The far right is the sum of all lists counted as far right in that election. The list of parties, with sources, is in the table above.</li>
       <li>Baden-W&uuml;rttemberg was formed in 1952; its forerunners W&uuml;rttemberg-Baden, Baden and W&uuml;rttemberg-Hohenzollern (1946&ndash;1950) are shown under it. Berlin 1950&ndash;1989 means West Berlin. Berlin&rsquo;s 2021 election was repeated in full in February 2023; the repeat is shown.</li>
       <li>Brandenburg 1990 is missing from the federal compilation and comes from the Brandenburg statistical office, which groups the smallest parties under &ldquo;others&rdquo;; its far-right share is a lower bound.</li>
+      <li>County maps: second votes by Landkreis and kreisfreie Stadt from the federal returning officer&rsquo;s county files, drawn on the county boundaries valid on election day. The files for 1957, 1965 and 1980 count the far-right list among &ldquo;others&rdquo;, so these elections have no map. The files for 1957&ndash;1965 leave out postal votes, and from 1990 a few postal votes could not be assigned to a county. Berlin is shown as one unit.</li>
       <li>Not counted: Freie Sachsen (2.2% in Saxony 2024) and other lists that none of the classifications used here covers.</li>
     </ul>
-    <p class="credit" id="dfr-credit">Election results: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/dam/jcr/a333e523-0717-42ad-a772-d5ad7e7e97cc/ltw_erg_gesamt.pdf">Ergebnisse früherer Landtagswahlen</a> (as of 13 October 2026) and <a href="https://bundeswahlleiterin.de/dam/jcr/397735e3-0585-46f6-a0b5-2c60c5b83de6/btw_ab49_gesamt.pdf">Ergebnisse früherer Bundestagswahlen</a> (June 2025), Wiesbaden; Brandenburg 1990: Landesamt f&uuml;r Datenverarbeitung und Statistik Brandenburg, <a href="https://www.statistischebibliothek.de/mir/servlets/MCRFileNodeServlet/BBHeft_derivate_00010767/SB_B7-2-1_5j-99_BBa.pdf">Statistischer Bericht B VII 2-1 5j/99</a>. Classification: <a href="https://popu-list.org">The PopuList 4.0</a> (Rooduijn et al. 2024); R. St&ouml;ss (1993), <a href="https://www.bpb.de/shop/zeitschriften/apuz/archiv/536428/rechtsextremismus-und-wahlen-in-der-bundesrepublik/">Rechtsextremismus und Wahlen in der Bundesrepublik</a>; J. Schedler (2021), <a href="https://www.bpb.de/kurz-knapp/lexika/handwoerterbuch-politisches-system/202097/extrem-rechte-parteien/">(Extrem) rechte Parteien</a>; the far-right list of <a href="https://doi.org/10.1038/s41597-025-04811-5">GERDA</a> (Heddesheimer et al. 2025) for the smallest parties.</p>
+    <p class="credit" id="dfr-credit">Election results: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/dam/jcr/a333e523-0717-42ad-a772-d5ad7e7e97cc/ltw_erg_gesamt.pdf">Ergebnisse früherer Landtagswahlen</a> (as of 13 October 2026) and <a href="https://bundeswahlleiterin.de/dam/jcr/397735e3-0585-46f6-a0b5-2c60c5b83de6/btw_ab49_gesamt.pdf">Ergebnisse früherer Bundestagswahlen</a> (June 2025), Wiesbaden; Brandenburg 1990: Landesamt f&uuml;r Datenverarbeitung und Statistik Brandenburg, <a href="https://www.statistischebibliothek.de/mir/servlets/MCRFileNodeServlet/BBHeft_derivate_00010767/SB_B7-2-1_5j-99_BBa.pdf">Statistischer Bericht B VII 2-1 5j/99</a>. Classification: <a href="https://popu-list.org">The PopuList 4.0</a> (Rooduijn et al. 2024); R. St&ouml;ss (1993), <a href="https://www.bpb.de/shop/zeitschriften/apuz/archiv/536428/rechtsextremismus-und-wahlen-in-der-bundesrepublik/">Rechtsextremismus und Wahlen in der Bundesrepublik</a>; J. Schedler (2021), <a href="https://www.bpb.de/kurz-knapp/lexika/handwoerterbuch-politisches-system/202097/extrem-rechte-parteien/">(Extrem) rechte Parteien</a>; the far-right list of <a href="https://doi.org/10.1038/s41597-025-04811-5">GERDA</a> (Heddesheimer et al. 2025) for the smallest parties. Results by county: Die Bundeswahlleiterin, <a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/weitere-ergebnisse.html">Ergebnisse nach kreisfreien St&auml;dten und Landkreisen</a> (one file per federal election, 1953&ndash;2025). County boundaries: &copy; <a href="https://www.bkg.bund.de">BKG</a> (2026) <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, VG-Hist, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_vg-hist.pdf">Datenquellen</a>; changed: generalised, and counties merged where the results merge them.</p>
   </div>
 </footer>`;
   if (root.dataset.header === 'false') root.querySelector('.masthead').remove();
@@ -506,6 +522,190 @@
       '<span><i class="dfr-sw dfr-sw--pre"></i>AfD before 2015 (not counted)</span><span><i class="dfr-sw dfr-sw--none"></i>No free elections</span>';
   }
 
+  // ---------- county map ----------
+  // TopoJSON decoding (only what the map needs: polygons and a border mesh), so the page needs no
+  // further library.
+  function topoReader(topo) {
+    const t = topo.transform;
+    const arcs = topo.arcs.map((a) => {
+      if (!t) return a;
+      let x = 0, y = 0;
+      return a.map(([dx, dy]) => { x += dx; y += dy; return [x * t.scale[0] + t.translate[0], y * t.scale[1] + t.translate[1]]; });
+    });
+    const arc = (i) => (i < 0 ? arcs[~i].slice().reverse() : arcs[i]);
+    const ring = (ids) => { const pts = []; ids.forEach((i, k) => { const a = arc(i); pts.push(...(k ? a.slice(1) : a)); }); return pts; };
+    const polys = (g) => (g.type === 'Polygon' ? [g.arcs] : g.type === 'MultiPolygon' ? g.arcs : []);
+    return {
+      features(obj) {
+        return obj.geometries.filter((g) => g.arcs).map((g) => ({
+          type: 'Feature', id: g.id, properties: g.properties || {},
+          geometry: { type: 'MultiPolygon', coordinates: polys(g).map((p) => p.map(ring)) },
+        }));
+      },
+      // arcs between two geometries for which keep(a, b) holds; an arc on the outside has a === b
+      mesh(obj, keep) {
+        const owners = new Map();
+        obj.geometries.forEach((g) => polys(g).forEach((p) => p.forEach((r) => r.forEach((i) => {
+          const k = i < 0 ? ~i : i;
+          if (!owners.has(k)) owners.set(k, []);
+          owners.get(k).push(g);
+        }))));
+        const lines = [];
+        owners.forEach((gs, k) => { if (keep(gs[0], gs[1] || gs[0])) lines.push(arcs[k]); });
+        return { type: 'MultiLineString', coordinates: lines };
+      },
+    };
+  }
+
+  const AGS = { '01': 'SH', '02': 'HH', '03': 'NI', '04': 'HB', '05': 'NW', '06': 'HE', '07': 'RP', '08': 'BW', '09': 'BY',
+    10: 'SL', 11: 'BE', 12: 'BB', 13: 'MV', 14: 'SN', 15: 'ST', 16: 'TH' };
+  const BINS = [1, 2, 5, 10, 20, 30, 40];             // far-right share, %: classes c1 (<1) ... c8 (40 and more)
+  const binOf = (v) => (v == null ? 0 : 1 + d3.bisectRight(BINS, v));
+  const MAP = { topo: null, reader: null, rows: new Map(), files: [], year: null, cache: new Map() };
+
+  function mapFeatures(year) {
+    if (!MAP.cache.has(year)) {
+      const obj = MAP.topo.objects['y' + year];
+      const feats = MAP.reader.features(obj);
+      const data = MAP.rows.get(year) || new Map();
+      feats.forEach((f) => { f.properties.r = data.get(f.id) || null; });
+      MAP.cache.set(year, {
+        feats,
+        states: MAP.reader.mesh(obj, (a, b) => a !== b && a.properties && b.properties && a.properties.s !== b.properties.s),
+        outline: MAP.reader.mesh(obj, (a, b) => a === b),
+      });
+    }
+    return MAP.cache.get(year);
+  }
+
+  function countyTip(f, file) {
+    const p = f.properties, r = p.r;
+    let html = '<p class="tt__meta">Federal election ' + file.y + ' · ' + esc(STATES[AGS[p.s]] || '') + '</p><p class="tt__title">' + esc(p.n) + '</p>';
+    if (!file.ok) return html + '<p class="tt__note">No county figures for the far right in this election.</p>';
+    if (!r) return html;
+    html += '<table class="tt__tab"><tbody>';
+    const lists = r.ps ? r.ps.split('|').map((x) => { const i = x.lastIndexOf(':'); return [x.slice(0, i), +x.slice(i + 1)]; }) : [];
+    if (lists.length) {
+      lists.forEach(([l, v]) => { html += '<tr><th>' + esc(l) + '</th><td>' + pct(v) + '</td></tr>'; });
+      if (lists.length > 1) html += '<tr class="tt__sub"><th>Far right together</th><td>' + pct(r.f) + '</td></tr>';
+    } else html += '<tr><th>Far right</th><td>no list on the ballot</td></tr>';
+    if (r.a0 != null) html += '<tr><th>AfD (not counted)</th><td>' + pct(r.a0) + '</td></tr>';
+    html += '<tr class="tt__sub"><th>Valid second votes</th><td>' + d3.format(',')(r.v) + '</td></tr></tbody></table>';
+    return html;
+  }
+
+  function drawMap(el) {
+    const W = Math.round(el.clientWidth);
+    if (!W || !MAP.topo) return;
+    el.querySelectorAll('svg, .dfr-map__msg').forEach((n) => n.remove());
+    const tip = el._tip || (el._tip = tooltip(el));
+    tip.hide();
+    const file = MAP.files.find((x) => x.y === MAP.year);
+    const { feats, states, outline } = mapFeatures(MAP.year);
+    const counties = feats.filter((f) => f.properties.s);
+    const others = feats.filter((f) => !f.properties.s);
+    const all = { type: 'FeatureCollection', features: feats };
+    const probe = d3.geoIdentity().reflectY(true).fitWidth(W, all);
+    const b = d3.geoPath(probe).bounds(all);
+    const H = Math.round(Math.min(b[1][1] - b[0][1], Math.max(420, Math.min(W * 1.35, 760))));
+    const proj = d3.geoIdentity().reflectY(true).fitExtent([[2, 2], [W - 2, H - 2]], all);
+    const path = d3.geoPath(proj);
+    const svg = d3.select(el).insert('svg', ':first-child').attr('width', W).attr('height', H).attr('viewBox', `0 0 ${W} ${H}`)
+      .attr('role', 'img');
+    svg.append('g').selectAll('path').data(others).join('path')
+      .attr('class', (f) => (f.id === 'gdr' ? 'dfr-nofree' : 'dfr-novote')).attr('d', path);
+    const shapes = svg.append('g').selectAll('path').data(counties).join('path')
+      .attr('class', (f) => 'dfr-county ' + (file.ok ? 'dfr-c' + (f.properties.r && f.properties.r.ps ? binOf(f.properties.r.f) : 0) : 'dfr-cx'))
+      .attr('d', path);
+    svg.append('path').attr('class', 'dfr-statelines').attr('d', path(states));
+    svg.append('path').attr('class', 'dfr-outline').attr('d', path(outline));
+    const hl = svg.append('path').attr('class', 'focus-ring');
+    const show = (ev, f) => {
+      hl.attr('d', path(f)).attr('visibility', 'visible');
+      const [px, py] = d3.pointer(ev, el);
+      tip.show(countyTip(f, file), px, py);
+    };
+    shapes.on('pointermove pointerdown', show);
+    svg.on('pointerleave', () => { tip.hide(); hl.attr('visibility', 'hidden'); });
+
+    // what the map says, in words
+    const vals = counties.filter((f) => f.properties.r).map((f) => ({ f: f.properties.r.f, n: f.properties.n, s: f.properties.s, ps: f.properties.r.ps }));
+    const notes = [];
+    if (file.ok && vals.length) {
+      const top = vals.reduce((a, c) => (c.f > a.f ? c : a));
+      const cut = top.f >= 30 ? 30 : top.f >= 10 ? 10 : 5;
+      const over = vals.filter((v) => v.f >= cut);
+      const east = over.filter((v) => +v.s >= 12).length;
+      const sorted = vals.map((v) => v.f).sort(d3.ascending);
+      notes.push(vals.length + ' counties. Highest: ' + top.n + ', ' + f1(top.f) + '%. Median county: ' + f1(d3.quantileSorted(sorted, 0.5)) + '%. ' +
+        cut + '% or more in ' + over.length + (over.length === 1 ? ' county' : ' counties') +
+        (MAP.year >= 1990 && over.length ? (east === over.length ? (over.length === 1 ? ', in the east' : over.length === 2 ? ', both in the east' : ', all in the east')
+          : east ? ', ' + east + ' of them in the east' : ', none in the east') : '') + '.');
+      svg.attr('aria-label', 'Map of the far right’s share of the second vote by county, federal election ' + MAP.year + '. ' + notes[0]);
+    } else {
+      const msg = document.createElement('p');
+      msg.className = 'dfr-map__msg';
+      msg.textContent = 'No county figures for the far right in ' + MAP.year + ': the county file counts the ' + file.miss.join(', ') + ' among “others”.';
+      el.appendChild(msg);
+      svg.attr('aria-label', 'County boundaries of ' + MAP.year + '. ' + msg.textContent);
+    }
+    if (MAP.year < 1990) notes.push('West Germany only: the east held no free elections, and West Berlin' + (MAP.year < 1957 ? ' and the Saarland' : '') + ' did not take part in federal elections.');
+    if (!file.post) notes.push('The county file counts ballot-box votes only; postal votes (' + f1(file.un) + '% of valid votes) were not assigned to counties.');
+    else if (file.un >= 0.5) notes.push(f1(file.un) + '% of valid votes (postal votes) could not be assigned to a county.');
+    if (file.ok && file.miss.length) notes.push('Not in the county file: ' + file.miss.join(', ') + ' (' + f1(file.missp) + '% of the far-right vote), counted among “others”.');
+    if (vals.some((v) => v.ps == null) && file.ok) notes.push('Blank: no far-right list on the ballot in that state.');
+    if (MAP.year === 2013) notes.push('The AfD counts as far right from 2015; hover to see its 2013 result.');
+    $('#map-note').textContent = notes.join(' ');
+  }
+
+  function renderMapKey() {
+    const labels = ['<1', '1–2', '2–5', '5–10', '10–20', '20–30', '30–40', '40+'];
+    $('#mapkey').innerHTML = '<div class="dfr-ramp" aria-label="Far-right share of the second vote, percent">' +
+      labels.map((l, i) => '<span><i class="dfr-c' + (i + 1) + '"></i>' + l + '</span>').join('') + '<span class="dfr-ramp__unit">%</span></div>' +
+      '<div class="dfr-key"><span><i class="dfr-sw dfr-sw--blank"></i>No far-right list</span><span><i class="dfr-sw dfr-sw--none"></i>No free elections</span>' +
+      '<span><i class="dfr-sw dfr-sw--novote"></i>Not in federal elections</span></div>';
+  }
+
+  function setupMap(el) {
+    let started = false;
+    const start = async () => {
+      if (started) return;
+      started = true;
+      try {
+        const [topo, rows, files] = await Promise.all([getJSON('data/counties.topo.json'), getJSON('data/counties.json'), getJSON('data/county_files.json')]);
+        MAP.topo = topo;
+        MAP.reader = topoReader(topo);
+        rows.forEach((r) => { if (!MAP.rows.has(r.y)) MAP.rows.set(r.y, new Map()); MAP.rows.get(r.y).set(r.u, r); });
+        MAP.files = files.filter((f) => topo.objects['y' + f.y]);
+      } catch (err) {
+        el.insertAdjacentHTML('afterbegin', '<p class="error">' + esc(err.message) + '</p>');
+        return;
+      }
+      MAP.year = d3.max(MAP.files.filter((f) => f.ok), (f) => f.y);
+      const seg = $('#year');
+      MAP.files.forEach((f) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = f.y;
+        if (!f.ok) { b.classList.add('is-off'); b.title = 'No county figures for the far right in ' + f.y; }
+        b.setAttribute('aria-pressed', String(f.y === MAP.year));
+        b.addEventListener('click', () => {
+          if (MAP.year === f.y) return;
+          MAP.year = f.y;
+          seg.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+          redraw();
+        });
+        seg.appendChild(b);
+      });
+      renderMapKey();
+      const redraw = onWidth(el, () => drawMap(el));
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); start(); } }, { rootMargin: '800px 0px' });
+      io.observe(el);
+    } else start();
+  }
+
   // ---------- parties table ----------
   function renderParties(list) {
     const short = { populist4: 'PopuList 4.0', stoess1993: 'Stöss 1993', schedler2021: 'Schedler 2021', gerda2025: 'GERDA' };
@@ -544,6 +744,7 @@
     buildSeg($('#level'), [['state', 'State elections'], ['federal', 'Federal elections, by state']], 'level', redrawArc);
     onWidth($('#parl'), () => drawParl($('#parl')));
     onWidth($('#panels'), () => drawPanels($('#panels')));
+    setupMap($('#map'));
   }
   boot();
 })();
