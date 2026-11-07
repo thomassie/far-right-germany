@@ -1,0 +1,300 @@
+/* Europe's Divides, The Far Right in Germany: styles, all scoped under .dfr so they cannot touch the
+   host page. The base (layout, type, switches, tooltip, table, footer) is the same as People vs
+   Parliament's pvp.css; colours come from the host's tokens (--paper, --ink, --muted, --rule, --red,
+   --blue, --link), so the page follows the host's light and dark themes; theme.css defines them for
+   the standalone page. Layout reacts to the width of its own container, not the screen.
+   One meaning per colour on this page: red = far right, ink = the national (federal) result. */
+.dfr { container: dfr / inline-size; position: relative; color: var(--ink); }
+/* Embedded (default): the host page provides width and side gutters. */
+.dfr:not(.dfr--standalone) .wrap { max-width: none; margin-inline: 0; padding-left: 0; padding-right: 0; }
+.dfr:not(.dfr--standalone) .masthead { padding-top: 0; }
+/* Shield from the host's global element styles (zero-specificity :where, so every rule below still wins). */
+.dfr :where(h1, h2, h3, h4, p, ul, ol, li, dl, dt, dd, figure, blockquote, table, th, td, summary, label, select, button, span, b, em, small) {
+  color: inherit; font-family: inherit; letter-spacing: normal; text-transform: none; text-shadow: none; }
+.dfr :where(a) { color: var(--link); text-decoration: underline; text-decoration-style: solid; }
+
+/* Layout: soft Bauhaus. An asymmetric two-column grid: a narrow rail carries each section's
+   heading and explanation, a wide field carries the chart. One column under 760px.
+   Colours come only from theme.css tokens. Type follows the main website: Helvetica/Arial for
+   headings, reading text and italic quotations; Google Sans Code for navigation and supporting
+   information (labels, axes, notes, figures in tables). */
+.dfr {
+  --font-display: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-support: "Google Sans Code", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --on-yellow: #2D3238;          /* text on the yellow fill, same in both themes */
+  --radius: 14px;
+  --gap: clamp(1.5rem, 4vw, 3rem);
+  --step--1: 0.8125rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.3125rem;
+  --step-2: clamp(1.5rem, 3vw, 1.875rem);
+  --step-3: clamp(2.5rem, 7vw, 4.5rem);
+  --hero: clamp(4rem, 14vw, 8.5rem);
+  --max: 1160px;
+}
+.dfr *, .dfr *::before, .dfr *::after { box-sizing: border-box; }
+.dfr [hidden] { display: none !important; }
+.dfr {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.dfr .wrap {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.dfr h1, .dfr h2, .dfr h3 { font-family: var(--font-display); font-weight: 500; line-height: 1.1; margin: 0; text-wrap: balance; }
+.dfr p { margin: 0; }
+.dfr a { text-underline-offset: 0.18em; }
+.dfr em, .dfr q, .dfr blockquote { font-family: var(--font-body); font-style: italic; }
+.dfr blockquote { margin: 0; padding-left: 1.25rem; border-left: 3px solid var(--yellow); font-size: var(--step-1); line-height: 1.45; }
+.dfr .eyebrow {
+  font-family: var(--font-support);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+/* Title full stop: a drawn circle (Helvetica's full stop is square). Sits on the baseline. */
+/* An inline graphic, not an empty box: every engine puts its bottom edge on the text baseline. */
+.dfr .title-dot { display: inline-block; width: 0.15em; height: 0.15em; margin: 0 0 0 0.06em; padding: 0; vertical-align: baseline; overflow: visible; }
+.dfr .title-dot circle { fill: var(--red); }
+/* ---------- Masthead ---------- */
+.dfr .masthead {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--gap);
+  align-items: end;
+  padding-block: clamp(2.5rem, 7vw, 5rem) 0;
+}
+.dfr .masthead__text { display: grid; gap: 1.25rem; max-width: 46rem; min-width: 0; }
+.dfr .masthead h1 { font-size: var(--step-3); letter-spacing: -0.02em; }
+.dfr .lede { font-size: var(--step-1); line-height: 1.45; max-width: 38rem; }
+/* Bauhaus mark: people (circle), parliament (square), the vote (half circle). */
+.dfr .mark { position: relative; width: 168px; height: 168px; flex: none; }
+.dfr .mark span { position: absolute; display: block; }
+.dfr .mark__square { left: 0; bottom: 0; width: 104px; height: 104px; background: var(--blue); border-radius: 10px; }
+.dfr .mark__circle { right: 0; top: 0; width: 104px; height: 104px; background: var(--red); border-radius: 50%; }
+.dfr .mark__half { right: 8px; bottom: 0; width: 72px; height: 36px; background: var(--yellow); border-radius: 72px 72px 0 0; }
+
+/* ---------- Sections ---------- */
+.dfr .block {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: var(--gap);
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  border-bottom: 1px solid var(--rule);
+}
+.dfr .block__rail { display: grid; gap: 0.875rem; align-content: start; min-width: 0; }
+.dfr .block__rail h2 { font-size: var(--step-2); }
+.dfr .block__rail p { color: var(--muted); max-width: 26rem; }
+.dfr .block__body { display: grid; gap: 1.25rem; min-width: 0; align-content: start; }
+.dfr .note { font-family: var(--font-support); font-size: var(--step--1); color: var(--muted); }
+/* ---------- Charts ---------- */
+.dfr .chart { position: relative; width: 100%; min-width: 0; }
+.dfr .chart svg { display: block; overflow: visible; }
+.dfr .chart text { font-family: var(--font-support); font-size: 11.5px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.dfr .chart .grid line { stroke: var(--rule); stroke-width: 1; shape-rendering: crispEdges; }
+.dfr .chart .grid line.mid { stroke: var(--muted); stroke-opacity: 0.55; }
+
+.dfr .chart .axis-title { font-family: var(--font-support); font-size: 12px; fill: var(--ink); }
+
+.dfr .focus-ring { fill: none; stroke: var(--ink); stroke-width: 2px; pointer-events: none; }
+.dfr .overlay { fill: transparent; }
+.dfr .overlay:focus { outline: none; }
+.dfr .overlay:focus-visible { stroke: var(--link); stroke-width: 2px; }
+.dfr .tooltip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  width: max-content;
+  max-width: min(18rem, calc(100% - 8px));
+  padding: 0.75rem 0.875rem;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.12);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.dfr .tooltip[hidden] { display: none; }
+.dfr .tt__meta { font-family: var(--font-support); font-size: 0.75rem; color: var(--muted); }
+.dfr .tt__title { font-weight: 500; margin: 0.2rem 0 0.5rem; }
+.dfr .tt__rows { display: grid; gap: 0.2rem; margin: 0; }
+.dfr .tt__rows div { display: flex; justify-content: space-between; gap: 1rem; }
+.dfr .tt__rows dt { font-family: var(--font-support); font-size: 0.8125rem; display: flex; align-items: center; gap: 0.45rem; color: var(--muted); }
+.dfr .tt__rows dd { margin: 0; font-family: var(--font-support); font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+
+/* ---------- Filters & legend ---------- */
+.dfr .filters { display: grid; gap: 0.5rem; }
+/* Switches ("bar index"): plain labels on a thin rule, a thick ink bar under the selected one.
+   Ink and paper only, so they never borrow the charts' colours or shapes. The rule runs the full
+   width of the column: a background repeating every 44px (the buttons' fixed height), so each
+   wrapped row on a phone gets its own full-width rule too. The bars are inset shadows, so nothing
+   shifts when the selection moves (Google Sans Code keeps its width at weight 500). */
+.dfr .seg {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  background: repeating-linear-gradient(to bottom, transparent 0 43px, var(--rule) 43px 44px);
+}
+.dfr .seg button {
+  font: inherit;
+  font-family: var(--font-support);
+  font-size: 0.875rem;
+  line-height: 1.2;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 0.875rem;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.dfr .seg button:hover { color: var(--ink); box-shadow: inset 0 -4px 0 var(--rule); }
+.dfr .seg button[aria-pressed="true"] { color: var(--ink); font-weight: 500; box-shadow: inset 0 -4px 0 var(--ink); }
+.dfr .seg button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+@media (forced-colors: active) {
+  .dfr .seg { background: none; }
+  .dfr .seg button { border-bottom: 1px solid CanvasText; box-shadow: none; }
+  .dfr .seg button[aria-pressed="true"] { border-bottom-width: 4px; }
+}
+.dfr .legend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; font-family: var(--font-support); font-size: 0.875rem; }
+.dfr .legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+.dfr .legend .count { font-family: var(--font-support); font-size: 0.8125rem; color: var(--muted); }
+.dfr .summary { font-family: var(--font-support); font-size: 0.875rem; color: var(--muted); }
+.dfr .summary strong { color: var(--ink); font-weight: 500; }
+/* ---------- Table view ---------- */
+.dfr .tableview summary { font-family: var(--font-support); font-size: 0.9375rem; cursor: pointer; color: var(--link); width: max-content; max-width: 100%; }
+.dfr .tableview summary:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; border-radius: 4px; }
+.dfr .tablewrap { overflow-x: auto; max-height: 28rem; overflow-y: auto; margin-top: 0.75rem; border: 1px solid var(--rule); border-radius: 10px; }
+.dfr table { border-collapse: collapse; width: 100%; font-size: 0.875rem; }
+.dfr th, .dfr td { text-align: left; padding: 0.45rem 0.75rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.dfr th { position: sticky; top: 0; background: var(--paper); font-family: var(--font-support); font-size: 0.8125rem; font-weight: 500; white-space: nowrap; }
+.dfr td.num, .dfr th.num { text-align: right; font-family: var(--font-support); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dfr td.date { font-family: var(--font-support); white-space: nowrap; }
+
+/* ---------- Footer ---------- */
+.dfr .foot { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--gap); padding-block: clamp(2.5rem, 6vw, 4rem); }
+.dfr .foot h2 { font-size: var(--step-1); }
+.dfr .foot ul { margin: 0; padding-left: 1.1rem; display: grid; gap: 0.5rem; color: var(--muted); max-width: 44rem; }
+.dfr .glossary { padding-bottom: 0; }
+.dfr .glossary dl { margin: 0; display: grid; gap: 0.35rem 0; max-width: 44rem; }
+.dfr .glossary dt { font-weight: 500; color: var(--ink); margin-top: 0.85rem; }
+.dfr .glossary dt:first-child { margin-top: 0; }
+.dfr .glossary dd { margin: 0; color: var(--muted); }
+.dfr .glossary dd ul { margin: 0.4rem 0; }
+.dfr .glossary b { font-weight: 500; color: var(--ink); }
+.dfr .foot .credit { font-family: var(--font-support); margin-top: 1.25rem; font-size: var(--step--1); color: var(--muted); }
+.dfr .error { padding: 1rem 1.25rem; border-radius: var(--radius); border: 1px solid var(--red); }
+
+/* Hero: two figures side by side */
+.dfr .hero {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  border-bottom: 1px solid var(--rule);
+}
+.dfr .hero__switch { grid-column: 1 / -1; display: grid; gap: 0.4rem; min-width: 0; }
+.dfr .hero__pov { font-family: var(--font-support); font-size: 0.8125rem; color: var(--muted); }
+.dfr .hero__item { display: grid; gap: 0.6rem; align-content: start; min-width: 0; }
+.dfr .hero__label { font-family: var(--font-support); font-size: 0.875rem; color: var(--muted); display: inline-flex; align-items: center; gap: 0.5rem; }
+.dfr .hero__figure { font-family: var(--font-body); font-weight: 500; font-size: clamp(3.25rem, 10vw, 6.5rem); line-height: 0.9; letter-spacing: -0.03em; }
+.dfr .hero__figure small { font-size: 0.45em; letter-spacing: 0; margin-left: 0.04em; }
+.dfr .hero__text { font-size: var(--step-1); line-height: 1.45; max-width: 28rem; }
+/* swatches */
+.dfr .dfr-sw { display: inline-block; width: 12px; height: 12px; flex: none; border-radius: 2px; }
+.dfr .dfr-sw--blue { background: var(--blue); border-radius: 50%; }
+.dfr .dfr-sw--red { background: var(--red); border-radius: 50%; }
+.dfr .dfr-sw--none { background: repeating-linear-gradient(45deg, var(--paper) 0 2.5px, color-mix(in srgb, var(--muted) 60%, var(--paper)) 2.5px 3.7px); box-shadow: inset 0 0 0 1px var(--rule); }
+.dfr .dfr-sw--out { background: var(--paper); box-shadow: inset 0 0 0 1px var(--muted); }
+/* tooltip table: region next to its country */
+.dfr .tooltip { max-width: min(20rem, calc(100% - 8px)); }
+.dfr .tt__tab { border-collapse: collapse; width: 100%; font-family: var(--font-support); font-size: 0.8125rem; }
+.dfr .tt__tab th, .dfr .tt__tab td { padding: 0.12rem 0 0.12rem 0.9rem; border: 0; text-align: right; font-weight: 400; position: static; background: none; white-space: nowrap; }
+.dfr .tt__tab th:first-child { padding-left: 0; text-align: left; color: var(--muted); white-space: normal; }
+.dfr .tt__tab thead th { font-size: 0.75rem; color: var(--muted); padding-bottom: 0.25rem; max-width: 7rem; overflow: hidden; text-overflow: ellipsis; }
+.dfr .tt__tab td { font-variant-numeric: tabular-nums; }
+.dfr .tt__tab td + td { color: var(--muted); }
+.dfr .tt__tab .tt__sub th, .dfr .tt__tab .tt__sub td { font-size: 0.75rem; color: var(--muted); }
+.dfr .tt__note { margin-top: 0.45rem; font-family: var(--font-support); font-size: 0.75rem; color: var(--muted); }
+@container dfr (max-width: 760px) {
+  .dfr .masthead { grid-template-columns: minmax(0, 1fr); }
+  .dfr .mark { width: 96px; height: 96px; order: -1; }
+  .dfr .mark__square { width: 60px; height: 60px; border-radius: 7px; }
+  .dfr .mark__circle { width: 60px; height: 60px; }
+  .dfr .mark__half { width: 42px; height: 21px; right: 4px; }
+  .dfr .block, .dfr .foot { grid-template-columns: minmax(0, 1fr); }
+  .dfr .seg button { padding: 0 0.6rem; }
+}
+@container dfr (max-width: 520px) {
+  .dfr .hero { grid-template-columns: minmax(0, 1fr); }
+}
+/* the wide region table scrolls inside its frame instead of widening the column */
+.dfr .block__body > * { min-width: 0; }
+
+/* ---------- This page ---------- */
+.dfr .dfr-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+.dfr .dfr-hatch-bg { fill: var(--paper); }
+.dfr .dfr-hatch-line { stroke: var(--muted); stroke-width: 1.2px; stroke-opacity: 0.45; }
+.dfr .dfr-sw--nat { background: var(--ink); border-radius: 1px; width: 10px; height: 10px; }
+.dfr .dfr-sw--fed { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--ink); border-radius: 1px; width: 9px; height: 9px; }
+.dfr .dfr-sw--pre { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--muted); border-radius: 50%; width: 10px; height: 10px; }
+.dfr .dfr-key { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; font-family: var(--font-support); font-size: 0.8125rem; color: var(--muted); }
+.dfr .dfr-key span { display: inline-flex; align-items: center; gap: 0.45rem; }
+.dfr .dfr-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
+.dfr .dfr-find { font-family: var(--font-support); font-size: 0.875rem; color: var(--muted); }
+.dfr .dfr-tools select {
+  font: inherit; font-family: var(--font-support); font-size: 0.9375rem; color: var(--ink);
+  background: var(--paper); border: 1px solid var(--muted); border-radius: 999px; padding: 0.35rem 0.9rem; max-width: 100%; }
+.dfr .dfr-tools select:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+/* the long arc */
+.dfr .dfr-waves rect { fill: var(--rule); fill-opacity: 0.45; }
+.dfr .chart text.dfr-wave-label { fill: var(--ink); font-size: 11px; }
+.dfr .dfr-stateline { fill: none; stroke: var(--red); stroke-width: 1px; stroke-opacity: 0.28; }
+.dfr .dfr-dot { fill: var(--red); stroke: var(--paper); stroke-width: 0.75px; }
+.dfr .dfr-pre { fill: var(--paper); stroke: var(--muted); stroke-width: 1.25px; }
+.dfr .dfr-natline { fill: none; stroke: var(--ink); stroke-width: 1.75px; }
+.dfr .dfr-nat { fill: var(--ink); stroke: var(--paper); stroke-width: 0.75px; }
+.dfr .has-follow .dfr-dot:not(.is-on) { fill-opacity: 0.22; }
+.dfr .has-follow .dfr-stateline { stroke-opacity: 0.1; }
+.dfr .has-follow .dfr-stateline.is-on { stroke-opacity: 1; stroke-width: 2px; }
+.dfr .chart text.dfr-follow-label { fill: var(--ink); font-size: 12px; font-weight: 500; }
+/* parliaments */
+.dfr .dfr-rowbg { fill: var(--rule); fill-opacity: 0.35; }
+.dfr .dfr-nofree { fill: url(#dfr-hatch); }
+.dfr .dfr-term { fill: var(--red); }
+.dfr .chart text.dfr-rowlabel { fill: var(--ink); font-size: 11.5px; }
+.dfr .dfr-count { fill: none; stroke: var(--red); stroke-width: 1.75px; }
+.dfr .dfr-count-area { fill: var(--red); fill-opacity: 0.14; }
+.dfr .chart text.dfr-count-title { fill: var(--ink); font-size: 11.5px; }
+/* small multiples */
+.dfr .dfr-panelgrid { display: grid; gap: 1.5rem 18px; }
+.dfr .dfr-panel { min-width: 0; }
+.dfr .dfr-panel__name { font-weight: 500; overflow-wrap: anywhere; }
+.dfr .dfr-panel__sub { font-family: var(--font-support); font-size: 0.8125rem; color: var(--muted); margin-bottom: 0.25rem; }
+.dfr .dfr-panel svg { display: block; overflow: visible; }
+.dfr .dfr-panel text { font-family: var(--font-support); font-size: 10.5px; fill: var(--muted); }
+.dfr .dfr-panel .grid line { stroke: var(--rule); stroke-width: 1; shape-rendering: crispEdges; }
+.dfr .dfr-panel-line { fill: none; stroke: var(--red); stroke-width: 1.25px; stroke-opacity: 0.7; }
+.dfr .dfr-panel-fedline { fill: none; stroke: var(--ink); stroke-width: 1px; stroke-opacity: 0.45; }
+.dfr .dfr-panel-fed { fill: var(--paper); stroke: var(--ink); stroke-width: 1.25px; }
+.dfr .dfr-panel .dfr-dot { stroke-width: 0.5px; }
+.dfr .dfr-panels { position: relative; }
+/* parties table */
+.dfr .dfr-tablewrap { max-height: none; }
+.dfr .dfr-tablewrap td b { font-weight: 500; }
+.dfr .dfr-at { color: var(--muted); font-size: 0.75rem; }
