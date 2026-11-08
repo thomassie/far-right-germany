@@ -9,7 +9,8 @@
    Reads data/*.json, written by pipeline/run.py from mart.de_* (MotherDuck), and data/counties.topo.json
    (county boundaries of each federal election, BKG VG-Hist). No database access here.
    Styles: germany.css (scoped under .dfr); colours come from the host's tokens or theme.css.
-   One meaning per colour: red = far right, ink = the national (federal) result. */
+   One meaning per colour: red = far right, ink = the national (federal) result.
+   Cross-links: both maps link to Area Doesn't Vote (VOTERS); #counties-<year> opens the county map at that year. */
 (function () {
   'use strict';
 
@@ -99,6 +100,7 @@
       <div class="dfr-mapkey" id="dfr-mapkey"></div>
       <div class="chart dfr-map" id="dfr-map"></div>
       <p class="note" id="dfr-map-note"></p>
+      <p class="dfr-xlink" id="dfr-map-xlink"></p>
     </div>
   </section>
 
@@ -121,6 +123,7 @@
       <div class="dfr-mapkey" id="dfr-tkey"></div>
       <div class="chart dfr-map dfr-tmap" id="dfr-tmap"></div>
       <p class="note" id="dfr-tmap-note"></p>
+      <p class="dfr-xlink" id="dfr-tmap-xlink"></p>
     </div>
   </section>
 
@@ -203,6 +206,7 @@
 
   // ---------- helpers ----------
   const $ = (sel) => root.querySelector(sel.replace(/#([\w-]+)/g, '#dfr-$1'));
+  const VOTERS = 'https://thomassie.me/projects/area-doesnt-vote/';   // companion page: the same elections drawn by eligible voters
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const f1 = d3.format('.1f');
   const pct = (v) => (v == null ? '–' : f1(v) + '%');
@@ -702,6 +706,9 @@
     if (vals.some((v) => v.ps == null) && file.ok) notes.push('Blank: no far-right list on the ballot in that state.');
     if (MAP.year === 2013) notes.push('The AfD counts as far right from 2015; hover to see its 2013 result.');
     $('#map-note').textContent = notes.join(' ');
+    $('#map-xlink').innerHTML = '<b>Land doesn&rsquo;t vote.</b> Big, thinly populated counties fill most of this map; the cities, where far more people vote per square kilometre, look small. ' +
+      (file.ok ? '<a href="' + VOTERS + '#' + MAP.year + '-counties">See ' + MAP.year + ' drawn by eligible voters</a>'
+        : '<a href="' + VOTERS + '">See the federal elections drawn by eligible voters</a>') + ' on Area Doesn&rsquo;t Vote.';
   }
 
   function renderMapKey() {
@@ -726,6 +733,8 @@
         return;
       }
       MAP.year = d3.max(MAP.files.filter((f) => f.ok), (f) => f.y);
+      const asked = /^#counties-(\d{4})$/.exec(location.hash);
+      if (asked && MAP.files.some((f) => f.ok && f.y === +asked[1])) MAP.year = +asked[1];
       const seg = $('#year');
       MAP.files.forEach((f) => {
         const b = document.createElement('button');
@@ -851,6 +860,8 @@
       (over.length ? cut + '% or more in ' + over.length + ' areas' + (east === over.length ? ', all in the east' : ', ' + east + ' of them in the east') + '. ' : '') +
       'Zoom with the buttons, by pinching, or with Ctrl or ⌘ and the scroll wheel.';
     svg.attr('aria-label', 'Map of the far right’s share of the second vote by municipality, federal election ' + TOWN.year + '. Highest: ' + top.n + ', ' + f1(top.f) + '%.');
+    $('#tmap-xlink').innerHTML = '<b>Land doesn&rsquo;t vote.</b> Thinly populated rural municipalities fill most of this map; the cities, where far more people vote per square kilometre, look small. ' +
+      '<a href="' + VOTERS + '#' + TOWN.year + '-counties">See ' + TOWN.year + ' drawn by eligible voters</a>, county by county, on Area Doesn&rsquo;t Vote.';
   }
 
   function setupTowns(el) {
@@ -1084,6 +1095,8 @@
     setupMap($('#map'));
     setupTowns($('#tmap'));
     setupWhy($('#scatter'));
+    // links from Area Doesn't Vote: #counties-<year> opens the county map at that election
+    if (/^#counties-\d{4}$/.test(location.hash)) requestAnimationFrame(() => $('#h-map').scrollIntoView({ block: 'start' }));
   }
   boot();
 })();

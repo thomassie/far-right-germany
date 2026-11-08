@@ -348,6 +348,10 @@
 .dfr .dfr-tmap path { vector-effect: non-scaling-stroke; }
 .dfr .dfr-tmap .dfr-county { stroke-width: 0.25px; }
 .dfr .dfr-tmap .dfr-nov { stroke: none; }
+/* cross-link to Area Doesn't Vote under both maps */
+.dfr .dfr-xlink { max-width: 44rem; padding: 0.8rem 1rem; border: 1px solid var(--rule); border-radius: 10px; font-size: 0.9375rem; line-height: 1.45; }
+.dfr .dfr-xlink:empty { display: none; }
+.dfr .dfr-xlink b { font-weight: 500; }
 .dfr .dfr-countylines { fill: none; stroke: var(--ink); stroke-width: 0.4px; stroke-opacity: 0.25; pointer-events: none; }
 .dfr .dfr-tmap .focus-ring { stroke-width: 1.75px; }
 @container dfr (max-width: 520px) { .dfr .dfr-zoom { margin-left: 0; } }
