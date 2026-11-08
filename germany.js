@@ -10,7 +10,8 @@
    (county boundaries of each federal election, BKG VG-Hist). No database access here.
    Styles: germany.css (scoped under .dfr); colours come from the host's tokens or theme.css.
    One meaning per colour: red = far right, ink = the national (federal) result.
-   Cross-links: both maps link to Area Doesn't Vote (VOTERS); #counties-<year> opens the county map at that year. */
+   Cross-links: both maps link to Area Doesn't Vote (VOTERS); #counties-<year> and #towns-<year> open the county or
+   town map at that year. On both maps a click or tap keeps an area marked until it is clicked again (keepOnClick). */
 (function () {
   'use strict';
 
@@ -254,6 +255,21 @@
       el: tip,
     };
   }
+
+  // Maps: hovering shows an area; a click or tap keeps it (outline and tooltip) until the same area is clicked
+  // again, another area is clicked, or Escape is pressed. Returns pin(f), used by the town search.
+  const PINS = new Set();
+  function keepOnClick(svg, shapes, show, hide) {
+    let pinned = null;
+    shapes.on('pointermove', (ev, f) => { if (!pinned && ev.pointerType === 'mouse') show(ev, f); })
+      .on('click', (ev, f) => { if (pinned === f) { pinned = null; hide(); } else { pinned = f; show(ev, f); } });
+    svg.on('pointerleave', () => { if (!pinned) hide(); });
+    const unpin = () => { if (pinned) { pinned = null; hide(); } };
+    PINS.forEach((u) => { if (!u.svg.node().isConnected) PINS.delete(u); });
+    PINS.add({ svg, unpin });
+    return { pin(f) { pinned = f; }, get pinned() { return pinned; } };
+  }
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') PINS.forEach((u) => u.unpin()); });
 
   function buildSeg(el, items, key, onPick) {
     el.innerHTML = '';
@@ -675,8 +691,7 @@
       const [px, py] = d3.pointer(ev, el);
       tip.show(countyTip(f, file), px, py);
     };
-    shapes.on('pointermove pointerdown', show);
-    svg.on('pointerleave', () => { tip.hide(); hl.attr('visibility', 'hidden'); });
+    keepOnClick(svg, shapes, show, () => { tip.hide(); hl.attr('visibility', 'hidden'); });
 
     // what the map says, in words
     const vals = counties.filter((f) => f.properties.r).map((f) => ({ f: f.properties.r.f, n: f.properties.n, s: f.properties.s, ps: f.properties.r.ps }));
@@ -829,8 +844,7 @@
       const [px, py] = d3.pointer(ev, el);
       tip.show(townTip(f, TOWN.year), px, py);
     };
-    shapes.on('pointermove pointerdown', show);
-    svg.on('pointerleave', () => { tip.hide(); hl.attr('visibility', 'hidden'); });
+    const keep = keepOnClick(svg, shapes, show, () => { tip.hide(); hl.attr('visibility', 'hidden'); });
     // zoom: buttons, pinch, ctrl/cmd + wheel, drag once zoomed in; one finger still scrolls the page
     const zoom = d3.zoom().scaleExtent([1, 32]).translateExtent([[0, 0], [W, H]])
       .filter((ev) => (ev.type === 'wheel' ? ev.ctrlKey || ev.metaKey : ev.type === 'touchstart' ? ev.touches.length > 1 : !ev.button))
@@ -841,6 +855,7 @@
       const k = Math.max(1, Math.min(8, 0.25 / Math.max((x1 - x0) / W, (y1 - y0) / H)));
       const t = d3.zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
       svg.transition().duration(600).call(zoom.transform, t).on('end', () => {
+        keep.pin(f);           // the town found stays marked until clicked or Escape
         hl.attr('d', path(f)).attr('visibility', 'visible');
         const c = path.centroid(f);
         const p = t.apply(c);
@@ -868,6 +883,8 @@
     let started = false;
     const years = [2017, 2021, 2025];
     TOWN.year = years[years.length - 1];
+    const askedT = /^#towns-(\d{4})$/.exec(location.hash);
+    if (askedT && years.includes(+askedT[1])) TOWN.year = +askedT[1];
     let redraw = null;
     const render = async () => {
       let data;
@@ -1101,6 +1118,7 @@
     setupWhy($('#scatter'));
     // links from Area Doesn't Vote: #counties-<year> opens the county map at that election
     if (/^#counties-\d{4}$/.test(location.hash)) requestAnimationFrame(() => $('#h-map').scrollIntoView({ block: 'start' }));
+    if (/^#towns-\d{4}$/.test(location.hash)) requestAnimationFrame(() => $('#h-towns').scrollIntoView({ block: 'start' }));
   }
   boot();
 })();
