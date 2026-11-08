@@ -343,7 +343,7 @@
   border: 1px solid var(--rule); border-radius: 999px; min-width: 2.25rem; height: 2.25rem; padding: 0 0.7rem; cursor: pointer; }
 .dfr .dfr-zoom button:hover { border-color: var(--muted); }
 .dfr .dfr-zoom button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
-.dfr .dfr-tmap svg { touch-action: pan-y; cursor: default; }
+.dfr .dfr-tmap svg { touch-action: pan-y; cursor: default; overflow: hidden; }   /* a zoomed map stays inside its frame */
 .dfr .dfr-tmap svg.is-zoomed { cursor: grab; }
 .dfr .dfr-tmap path { vector-effect: non-scaling-stroke; }
 .dfr .dfr-tmap .dfr-county { stroke-width: 0.25px; }

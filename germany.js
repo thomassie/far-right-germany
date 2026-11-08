@@ -836,9 +836,9 @@
       .filter((ev) => (ev.type === 'wheel' ? ev.ctrlKey || ev.metaKey : ev.type === 'touchstart' ? ev.touches.length > 1 : !ev.button))
       .on('zoom', (ev) => { g.attr('transform', ev.transform); svg.classed('is-zoomed', ev.transform.k > 1.01); tip.hide(); });
     svg.call(zoom).on('dblclick.zoom', null);
-    const zoomTo = (f) => {
+    const zoomTo = (f) => {      // the municipality and its surroundings: at most 8 times, so its neighbours stay in view
       const [[x0, y0], [x1, y1]] = path.bounds(f);
-      const k = Math.min(24, 0.5 / Math.max((x1 - x0) / W, (y1 - y0) / H));
+      const k = Math.max(1, Math.min(8, 0.25 / Math.max((x1 - x0) / W, (y1 - y0) / H)));
       const t = d3.zoomIdentity.translate(W / 2, H / 2).scale(k).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
       svg.transition().duration(600).call(zoom.transform, t).on('end', () => {
         hl.attr('d', path(f)).attr('visibility', 'visible');
@@ -905,15 +905,19 @@
       $('#tkey').innerHTML = rampKey() +
         '<div class="dfr-key"><span><i class="dfr-sw dfr-sw--novote"></i>No result of its own</span><span><i class="dfr-sw dfr-sw--blank"></i>No voters</span></div>';
       const find = $('#tfind');
+      const resetTowns = () => TOWN.view && TOWN.view.svg.transition().duration(400).call(TOWN.view.zoom.transform, d3.zoomIdentity);
       find.addEventListener('change', () => {
         const u = TOWN.names && TOWN.names.get(find.value);
         if (!u || !TOWN.view) return;
         const f = TOWN.view.data.feats.find((x) => x.id === u);
         if (f) TOWN.view.zoomTo(f);
       });
+      find.addEventListener('search', () => { if (!find.value) resetTowns(); });    // clearing the field zooms back out
+      find.addEventListener('keydown', (e) => { if (e.key === 'Escape') { find.value = ''; resetTowns(); } });
+      el.addEventListener('keydown', (e) => { if (e.key === 'Escape') resetTowns(); });
       $('#tzin').addEventListener('click', () => TOWN.view && TOWN.view.svg.transition().duration(300).call(TOWN.view.zoom.scaleBy, 2));
       $('#tzout').addEventListener('click', () => TOWN.view && TOWN.view.svg.transition().duration(300).call(TOWN.view.zoom.scaleBy, 0.5));
-      $('#tzreset').addEventListener('click', () => TOWN.view && TOWN.view.svg.transition().duration(400).call(TOWN.view.zoom.transform, d3.zoomIdentity));
+      $('#tzreset').addEventListener('click', resetTowns);
       render();
     };
     if ('IntersectionObserver' in window) {
