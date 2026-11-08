@@ -128,7 +128,7 @@
     <div class="block__rail">
       <h2 id="dfr-h-why">What goes with it${DOT}</h2>
       <p>The 400 counties compared on nine measures from the federal institute for regional research (BBSR). East and west are compared separately: the vote and most of the measures differ so much between the two that a single comparison would mostly show the gap between them.</p>
-      <p>In 2025 one pattern held in east and west alike: the fewer people with a university degree, the stronger the far right (&rho; &minus;0.64 in the west, &minus;0.65 in the east; in 2017 only &minus;0.19 and &minus;0.16). It was also stronger where few young women live. In the east it did best where the population is older and shrinking, where industry jobs are common and where few foreign nationals live. Unemployment hardly goes with it in either part of the country.</p>
+      <p>In 2025 one pattern held in east and west alike: the fewer people with a university degree, the stronger the far right<span id="dfr-why-rho"></span>. It was also stronger where few young women live. In the east it did best where the population is older and shrinking, where industry jobs are common and where few foreign nationals live. Unemployment hardly goes with it in either part of the country.</p>
       <p>These are patterns across counties, not causes, and they say nothing about how any one person votes.</p>
     </div>
     <div class="block__body">
@@ -1010,6 +1010,11 @@
       }
       WHY.code = WHY.ind[0].code;
       WHY.year = d3.max(WHY.rows, (r) => r.y);
+      // the figures in the text come from the data (the statements themselves are guarded by sql/90_qa.sql)
+      const rho = (y, r) => { const k = WHY.corr.find((c) => c.y === y && c.c === 'a_svw_akadem' && c.r === r); return k ? rhoTxt(k.rho) : '–'; };
+      const first = d3.min(WHY.rows, (r) => r.y);
+      $('#why-rho').textContent = ' (ρ ' + rho(WHY.year, 'west') + ' in the west, ' + rho(WHY.year, 'east') + ' in the east; in ' + first + ' only ' +
+        rho(first, 'west') + ' and ' + rho(first, 'east') + ')';
       const redraw = onWidth(el, () => drawWhy(el));
       const segInd = $('#ind'), segYear = $('#cyear');
       const pick = (seg, val, key) => seg.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === String(val))));
