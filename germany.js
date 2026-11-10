@@ -649,10 +649,11 @@
     let html = '<p class="tt__meta">Federal election ' + file.y + ' · ' + esc(STATES[AGS[p.s]] || '') + '</p><p class="tt__title">' + esc(p.n) + '</p>';
     if (!file.ok) return html + '<p class="tt__note">No county figures for the far right in this election.</p>';
     if (!r) return html;
-    html += '<table class="tt__tab"><tbody>';
-    const lists = r.ps ? r.ps.split('|').map((x) => { const i = x.lastIndexOf(':'); return [x.slice(0, i), +x.slice(i + 1)]; }) : [];
+    const bars = r.pp ? partyBars(r, file.y) : '';
+    html += bars + '<table class="tt__tab"><tbody>';
+    const lists = splitLists(r.ps);
     if (lists.length) {
-      lists.forEach(([l, v]) => { html += '<tr><th>' + esc(l) + '</th><td>' + pct(v) + '</td></tr>'; });
+      if (!bars) lists.forEach(([l, v]) => { html += '<tr><th>' + esc(l) + '</th><td>' + pct(v) + '</td></tr>'; });
       if (lists.length > 1) html += '<tr class="tt__sub"><th>Far right together</th><td>' + pct(r.f) + '</td></tr>';
     } else html += '<tr><th>Far right</th><td>no list on the ballot</td></tr>';
     if (r.a0 != null) html += '<tr><th>AfD (not counted)</th><td>' + pct(r.a0) + '</td></tr>';
@@ -743,6 +744,8 @@
         MAP.reader = topoReader(topo);
         rows.forEach((r) => { if (!MAP.rows.has(r.y)) MAP.rows.set(r.y, new Map()); MAP.rows.get(r.y).set(r.u, r); });
         MAP.files = files.filter((f) => topo.objects['y' + f.y]);
+        files.forEach((f) => GERMANY.set(f.y, new Map(splitLists(f.pp))));
+        germanyLoad = germanyLoad || Promise.resolve();
       } catch (err) {
         el.insertAdjacentHTML('afterbegin', '<p class="error">' + esc(err.message) + '</p>');
         return;
@@ -777,9 +780,43 @@
   // ---------- municipality map ----------
   const TOWN = { year: null, years: [], cache: new Map(), view: null };
 
+  // All parties as bars in the map tooltips: far-right lists red, the rest grey, small parties together as "Others"; a thin
+  // tick marks Germany's share of each party in the same election (summed over the county file, the same count as the
+  // county shares). 'Sonstige' = parties the file does not list separately.
+  const GERMANY = new Map();   // year -> Map(label -> pct)
+  let germanyLoad = null;
+  const loadGermany = () => germanyLoad || (germanyLoad = getJSON('data/county_files.json').then((files) => {
+    files.forEach((f) => GERMANY.set(f.y, new Map(splitLists(f.pp))));
+  }).catch(() => {}));
+  function splitLists(s) {
+    return s ? s.split('|').map((x) => { const i = x.lastIndexOf(':'); return [x.slice(0, i), +x.slice(i + 1)]; }) : [];
+  }
+  function partyBars(r, year) {
+    const all = splitLists(r.pp);
+    if (!all.length) return '';
+    const fr = new Set(splitLists(r.ps).map(([l]) => l));
+    splitLists(r.ps).forEach(([l, v]) => { if (!all.some(([q]) => q === l)) all.push([l, v]); });   // far right below 0.5%
+    const named = all.filter(([l, v]) => l !== 'Sonstige' && (v >= 2 || (fr.has(l) && v > 0))).sort((a, b) => b[1] - a[1]).slice(0, 9);
+    const others = d3.sum(all.filter((d) => !named.includes(d)), (d) => d[1]) + Math.max(0, 100 - d3.sum(all, (d) => d[1]));
+    const nat = GERMANY.get(year) || new Map();
+    const rows = named.concat(others >= 0.05 ? [['Sonstige', others]] : []);
+    const top = d3.max(rows, (d) => Math.max(d[1], d[0] === 'Sonstige' ? 0 : nat.get(d[0]) || 0));
+    const max = Math.max(20, Math.ceil(top / 10) * 10);
+    const w = (v) => Math.min(100, (100 * v) / max).toFixed(1) + '%';
+    let html = '<div class="dfr-bars" role="list">';
+    rows.forEach(([l, v]) => {
+      const n = l === 'Sonstige' ? null : nat.get(l);
+      html += '<div class="dfr-bar' + (fr.has(l) ? ' is-fr' : '') + (l === 'Sonstige' ? ' is-other' : '') + '" role="listitem">' +
+        '<span class="dfr-bar__l">' + esc(l === 'Sonstige' ? 'Others' : l) + '</span><span class="dfr-bar__t"><i style="width:' + w(v) + '"></i>' +
+        (n != null ? '<b style="left:' + w(n) + '" title="Germany: ' + pct(n) + '"></b>' : '') + '</span>' +
+        '<span class="dfr-bar__v">' + f1(v) + '%</span></div>';
+    });
+    return html + '</div>' + (nat.size ? '<p class="dfr-bars__key"><b></b>Germany in ' + year + '</p>' : '');
+  }
+
   async function townData(year) {
     if (!TOWN.cache.has(year)) {
-      const [topo, rows] = await Promise.all([getJSON('data/municipalities_' + year + '.topo.json'), getJSON('data/municipalities_' + year + '.json')]);
+      const [topo, rows] = await Promise.all([getJSON('data/municipalities_' + year + '.topo.json'), getJSON('data/municipalities_' + year + '.json'), loadGermany()]);
       const reader = topoReader(topo);
       const obj = topo.objects.units;
       const byId = new Map(rows.map((r) => [r.u, r]));
@@ -807,10 +844,11 @@
       html += '<p class="tt__note">' + (r.g ? r.m + ' municipalities that count their postal votes together' : r.m + ' municipalities counted together') +
         (names.length ? ': ' + esc(names.slice(0, 8).join(', ')) + (names.length > 8 ? ' and ' + (names.length - 8) + ' more' : '') : '') + '.</p>';
     }
-    html += '<table class="tt__tab"><tbody>';
-    const lists = r.ps ? r.ps.split('|').map((x) => { const i = x.lastIndexOf(':'); return [x.slice(0, i), +x.slice(i + 1)]; }) : [];
+    const bars = r.pp ? partyBars(r, year) : '';
+    html += bars + '<table class="tt__tab"><tbody>';
+    const lists = splitLists(r.ps);
     if (lists.length) {
-      lists.forEach(([l, v]) => { html += '<tr><th>' + esc(l) + '</th><td>' + pct(v) + '</td></tr>'; });
+      if (!bars) lists.forEach(([l, v]) => { html += '<tr><th>' + esc(l) + '</th><td>' + pct(v) + '</td></tr>'; });
       if (lists.length > 1) html += '<tr class="tt__sub"><th>Far right together</th><td>' + pct(r.f) + '</td></tr>';
     } else html += '<tr><th>Far right</th><td>no votes</td></tr>';
     html += '<tr class="tt__sub"><th>Valid second votes</th><td>' + d3.format(',')(r.v) + '</td></tr></tbody></table>';

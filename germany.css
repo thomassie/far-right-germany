@@ -369,3 +369,18 @@
 .dfr .dfr-rho { position: relative; display: block; height: 10px; background: linear-gradient(to right, transparent calc(50% - 0.5px), var(--muted) calc(50% - 0.5px), var(--muted) calc(50% + 0.5px), transparent calc(50% + 0.5px)); }
 .dfr .dfr-rho i { position: absolute; top: 1px; bottom: 1px; background: var(--muted); border-radius: 1px; }
 @container dfr (max-width: 520px) { .dfr .dfr-rhocell { display: none; } }
+
+/* all parties in the map tooltips: far right red, the rest grey, a tick for Germany */
+.dfr .dfr-bars { display: grid; grid-template-columns: auto minmax(5rem, 1fr) auto; column-gap: 0.5rem; row-gap: 0.2rem; align-items: center; margin: 0.4rem 0 0.3rem; font-family: var(--font-support); font-size: 0.75rem; }
+.dfr .dfr-bar { display: contents; }
+.dfr .dfr-bar__l { color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 8.5rem; }
+.dfr .dfr-bar__t { position: relative; height: 0.6rem; }
+.dfr .dfr-bar__t i { position: absolute; left: 0; top: 0; bottom: 0; background: color-mix(in srgb, var(--muted) 45%, transparent); border-radius: 1px; }
+.dfr .dfr-bar.is-fr .dfr-bar__t i { background: var(--red); }
+.dfr .dfr-bar.is-fr .dfr-bar__l { color: var(--red); font-weight: 600; }
+.dfr .dfr-bar.is-other .dfr-bar__l, .dfr .dfr-bar.is-other .dfr-bar__v { color: var(--muted); }
+.dfr .dfr-bar.is-other .dfr-bar__t i { background: color-mix(in srgb, var(--muted) 22%, transparent); }
+.dfr .dfr-bar__t b { position: absolute; top: -0.15rem; bottom: -0.15rem; width: 2px; margin-left: -1px; background: var(--ink); }
+.dfr .dfr-bar__v { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+.dfr .dfr-bars__key { margin: 0 0 0.35rem; font-family: var(--font-support); font-size: 0.6875rem; color: var(--muted); display: flex; align-items: center; gap: 0.35rem; }
+.dfr .dfr-bars__key b { display: inline-block; width: 2px; height: 0.75rem; background: var(--ink); }
