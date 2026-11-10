@@ -58,8 +58,7 @@
         <div class="seg" id="dfr-level" role="group" aria-label="Elections"></div>
       </div>
       <div class="dfr-tools">
-        <label class="dfr-find" for="dfr-follow">Follow a state</label>
-        <select id="dfr-follow"></select>
+        <label class="dfr-pick" for="dfr-follow"><span>Follow a state</span><select id="dfr-follow"></select></label>
       </div>
       <div class="dfr-key" id="dfr-key"></div>
       <div class="chart" id="dfr-arc"></div>
@@ -114,11 +113,11 @@
     <div class="block__body">
       <div class="seg dfr-years" id="dfr-tyear" role="group" aria-label="Federal election"></div>
       <div class="dfr-tools">
-        <label class="dfr-find" for="dfr-tfind">Find a municipality</label>
-        <input id="dfr-tfind" class="dfr-search" type="search" list="dfr-tnames" autocomplete="off" placeholder="e.g. Görlitz">
+        <label class="dfr-find" for="dfr-tfind"><svg class="dfr-mag" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.75"/><line x1="10" y1="10" x2="14.5" y2="14.5"/></svg><span>Find a municipality</span>
+          <input id="dfr-tfind" type="search" list="dfr-tnames" autocomplete="off" placeholder="e.g. Görlitz"></label>
         <datalist id="dfr-tnames"></datalist>
         <span class="dfr-zoom" role="group" aria-label="Zoom">
-          <button type="button" id="dfr-tzin" aria-label="Zoom in">+</button><button type="button" id="dfr-tzout" aria-label="Zoom out">&minus;</button><button type="button" id="dfr-tzreset">Reset</button>
+          <button type="button" id="dfr-tzin" aria-label="Zoom in">+</button><button type="button" id="dfr-tzout" aria-label="Zoom out">&minus;</button><span class="dfr-zsep" aria-hidden="true"></span><button type="button" id="dfr-tzreset">Reset</button>
         </span>
       </div>
       <div class="dfr-mapkey" id="dfr-tkey"></div>

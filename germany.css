@@ -255,12 +255,41 @@
 .dfr .dfr-sw--pre { background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--muted); border-radius: 50%; width: 10px; height: 10px; }
 .dfr .dfr-key { display: flex; flex-wrap: wrap; gap: 0.25rem 1.25rem; font-family: var(--font-support); font-size: 0.8125rem; color: var(--muted); }
 .dfr .dfr-key span { display: inline-flex; align-items: center; gap: 0.45rem; }
-.dfr .dfr-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.75rem; }
-.dfr .dfr-find { font-family: var(--font-support); font-size: 0.875rem; color: var(--muted); }
-.dfr .dfr-tools select {
-  font: inherit; font-family: var(--font-support); font-size: 0.9375rem; color: var(--ink);
-  background: var(--paper); border: 1px solid var(--muted); border-radius: 999px; padding: 0.35rem 0.9rem; max-width: 100%; }
-.dfr .dfr-tools select:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
+/* Controls on the rule: search fields, pickers and zoom are rows like the switches above them: 44px on a thin
+   rule, mono labels, a thick ink bar under the one in use. No boxes, no pills; the rule is the field's edge. */
+.dfr .dfr-tools { display: flex; flex-wrap: wrap; align-items: stretch; column-gap: 1.5rem;
+  background: repeating-linear-gradient(to bottom, transparent 0 43px, var(--rule) 43px 44px); }
+.dfr .dfr-find, .dfr .dfr-pick { position: relative; display: flex; align-items: center; gap: 0.55rem; height: 44px; min-width: 0;
+  font-family: var(--font-support); font-size: 0.875rem; color: var(--muted); }
+.dfr .dfr-find { flex: 0 1 21rem; cursor: text; }
+.dfr .dfr-pick { cursor: pointer; }
+.dfr .dfr-find:focus-within, .dfr .dfr-pick:focus-within { color: var(--ink); box-shadow: inset 0 -4px 0 var(--ink); }
+.dfr .dfr-find > span, .dfr .dfr-pick > span { white-space: nowrap; }
+.dfr .dfr-mag { width: 15px; height: 15px; flex: none; }
+.dfr .dfr-mag circle, .dfr .dfr-mag line { fill: none; stroke: currentColor; stroke-width: 1.6; }
+.dfr .dfr-find input { -webkit-appearance: none; appearance: none; border: 0; border-radius: 0; background: none; margin: 0; padding: 0;
+  font: inherit; font-family: var(--font-body); font-size: 0.9375rem; color: var(--ink); width: 100%; min-width: 5rem; height: 100%; outline: 0; }
+.dfr .dfr-find input::placeholder { color: var(--muted); opacity: 0.8; }
+.dfr .dfr-find input::-webkit-search-decoration, .dfr .dfr-find input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+.dfr .dfr-find input::-webkit-calendar-picker-indicator { display: none !important; }   /* the list's arrow; names still appear as you type */
+.dfr .dfr-pick select { -webkit-appearance: none; appearance: none; border: 0; border-radius: 0; background: none; margin: 0;
+  font: inherit; font-family: var(--font-support); font-size: 0.875rem; font-weight: 500; color: var(--ink);
+  height: 100%; max-width: 100%; padding: 0 1.4rem 0 0; cursor: pointer; outline: 0; }
+.dfr .dfr-pick::after { content: ""; position: absolute; right: 0.2rem; top: 50%; width: 6px; height: 6px; margin-top: -5px;
+  border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg); pointer-events: none; }
+.dfr .dfr-zoom { display: flex; margin-left: auto; }
+.dfr .dfr-zoom button { font: inherit; font-family: var(--font-support); font-size: 0.875rem; color: var(--muted); background: none;
+  border: 0; border-radius: 0; margin: 0; height: 44px; min-width: 44px; padding: 0 0.875rem; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.dfr .dfr-zoom button:hover { color: var(--ink); box-shadow: inset 0 -4px 0 var(--rule); }
+.dfr .dfr-zoom button:active { color: var(--ink); box-shadow: inset 0 -4px 0 var(--ink); }
+.dfr .dfr-zoom button:focus-visible { outline: 2px solid var(--link); outline-offset: -2px; }
+.dfr .dfr-zsep { width: 1px; background: var(--rule); margin: 12px 0 13px; }
+@container dfr (max-width: 520px) { .dfr .dfr-find { flex: 1 1 100%; } .dfr .dfr-zoom { margin-left: 0; } }
+@media (forced-colors: active) {
+  .dfr .dfr-tools { background: none; }
+  .dfr .dfr-find, .dfr .dfr-pick { border-bottom: 1px solid CanvasText; }
+  .dfr .dfr-find:focus-within, .dfr .dfr-pick:focus-within { border-bottom-width: 4px; box-shadow: none; }
+}
 /* the long arc */
 .dfr .dfr-waves rect { fill: var(--rule); fill-opacity: 0.45; }
 .dfr .chart text.dfr-wave-label { fill: var(--ink); font-size: 11px; }
@@ -332,29 +361,18 @@
 .dfr .dfr-sw--blank { background: var(--paper); box-shadow: inset 0 0 0 1px var(--rule); }
 .dfr .dfr-sw--novote { background: color-mix(in srgb, var(--rule) 70%, var(--paper)); }
 /* municipality map */
-.dfr .dfr-search {
-  font: inherit; font-family: var(--font-support); font-size: 0.9375rem; color: var(--ink);
-  background: var(--paper); border: 1px solid var(--muted); border-radius: 999px; padding: 0.35rem 0.9rem;
-  width: 15rem; max-width: 100%; }
-.dfr .dfr-search:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
-.dfr .dfr-zoom { display: inline-flex; gap: 0.35rem; margin-left: auto; }
-.dfr .dfr-zoom button {
-  font: inherit; font-family: var(--font-support); font-size: 0.875rem; color: var(--ink); background: var(--paper);
-  border: 1px solid var(--rule); border-radius: 999px; min-width: 2.25rem; height: 2.25rem; padding: 0 0.7rem; cursor: pointer; }
-.dfr .dfr-zoom button:hover { border-color: var(--muted); }
-.dfr .dfr-zoom button:focus-visible { outline: 2px solid var(--link); outline-offset: 2px; }
 .dfr .dfr-tmap svg { touch-action: pan-y; cursor: default; overflow: hidden; }   /* a zoomed map stays inside its frame */
 .dfr .dfr-tmap svg.is-zoomed { cursor: grab; }
 .dfr .dfr-tmap path { vector-effect: non-scaling-stroke; }
 .dfr .dfr-tmap .dfr-county { stroke-width: 0.25px; }
 .dfr .dfr-tmap .dfr-nov { stroke: none; }
 /* cross-link to Area Doesn't Vote under both maps */
-.dfr .dfr-xlink { max-width: 44rem; padding: 0.8rem 1rem; border: 1px solid var(--rule); border-radius: 10px; font-size: 0.9375rem; line-height: 1.45; }
+/* a note between two rules, like a table row: no box */
+.dfr .dfr-xlink { max-width: 44rem; padding: 0.8rem 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); font-size: 0.9375rem; line-height: 1.45; }
 .dfr .dfr-xlink:empty { display: none; }
 .dfr .dfr-xlink b { font-weight: 500; }
 .dfr .dfr-countylines { fill: none; stroke: var(--ink); stroke-width: 0.4px; stroke-opacity: 0.25; pointer-events: none; }
 .dfr .dfr-tmap .focus-ring { stroke-width: 1.75px; }
-@container dfr (max-width: 520px) { .dfr .dfr-zoom { margin-left: 0; } }
 /* what goes with it */
 .dfr .dfr-hollow { fill: var(--paper); fill-opacity: 0.6; stroke: var(--red); stroke-width: 1px; stroke-opacity: 0.75; }
 .dfr .dfr-sw--hollow { background: var(--paper); box-shadow: inset 0 0 0 1.25px var(--red); border-radius: 50%; }
