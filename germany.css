@@ -332,6 +332,10 @@
 .dfr .dfr-c7 { --c: var(--red); }
 .dfr .dfr-c8 { --c: color-mix(in oklab, var(--red) 62%, var(--ink)); }
 .dfr .dfr-c9 { --c: color-mix(in oklab, var(--red) 34%, var(--ink)); }
+/* dark theme: the two top classes turn towards yellow, not the light ink, so they grow brighter and stay saturated
+   (lightness keeps rising class by class; mixed with the light ink they faded to pink and read as less) */
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .dfr .dfr-c8 { --c: color-mix(in oklab, var(--red) 60%, var(--yellow, var(--red))); } :root:not([data-theme="light"]) .dfr .dfr-c9 { --c: color-mix(in oklab, var(--red) 25%, var(--yellow, var(--red))); } }
+:root[data-theme="dark"] .dfr .dfr-c8 { --c: color-mix(in oklab, var(--red) 60%, var(--yellow, var(--red))); } :root[data-theme="dark"] .dfr .dfr-c9 { --c: color-mix(in oklab, var(--red) 25%, var(--yellow, var(--red))); }
 .dfr .dfr-cx { --c: color-mix(in srgb, var(--rule) 45%, var(--paper)); }
 .dfr .dfr-map { max-width: 760px; }
 .dfr .dfr-map svg path { fill-rule: evenodd; }
