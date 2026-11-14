@@ -96,7 +96,7 @@
       <p>The strongholds have moved: in 1953 the DRP did best in Lower Saxony and Rhenish Hesse, in 1969 the NPD in the rural Palatinate, Rhenish Hesse and Franconia, in 1990 the Republikaner in Bavaria. Since 2005 the strongest counties have all been in the east, mostly in Saxony and Thuringia.</p>
     </div>
     <div class="block__body">
-      <div class="seg dfr-years" id="dfr-year" role="group" aria-label="Federal election"></div>
+      <div class="dfr-slider" id="dfr-year" data-label="Federal election"></div>
       <div class="dfr-mapkey" id="dfr-mapkey"></div>
       <div class="chart dfr-map" id="dfr-map"></div>
       <p class="note" id="dfr-map-note"></p>
@@ -111,7 +111,7 @@
       <p>In 2025 the AfD won more than half of the second votes in 100 areas, all in the east, led by Schnaudertal in Saxony-Anhalt (58.0%); in 2021 it had passed 40% in 18. In the west its strongest areas lie in the Bavarian Forest and in parts of Baden-W&uuml;rttemberg, none above 40%.</p>
     </div>
     <div class="block__body">
-      <div class="seg dfr-years" id="dfr-tyear" role="group" aria-label="Federal election"></div>
+      <div class="dfr-slider" id="dfr-tyear" data-label="Federal election"></div>
       <div class="dfr-tools">
         <label class="dfr-find" for="dfr-tfind"><svg class="dfr-mag" viewBox="0 0 16 16" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.75"/><line x1="10" y1="10" x2="14.5" y2="14.5"/></svg><span>Find a municipality</span>
           <input id="dfr-tfind" type="search" list="dfr-tnames" autocomplete="off" placeholder="e.g. Görlitz"></label>
@@ -137,7 +137,7 @@
     <div class="block__body">
       <div class="filters">
         <div class="seg dfr-years" id="dfr-ind" role="group" aria-label="Measure"></div>
-        <div class="seg dfr-years" id="dfr-cyear" role="group" aria-label="Federal election"></div>
+        <div class="dfr-slider" id="dfr-cyear" data-label="Federal election"></div>
       </div>
       <div class="dfr-key"><span><i class="dfr-sw dfr-sw--red"></i>County in the east</span><span><i class="dfr-sw dfr-sw--hollow"></i>County in the west (and Berlin)</span><span><i class="dfr-ln dfr-ln--east"></i>Trend, east</span><span><i class="dfr-ln dfr-ln--west"></i>Trend, west</span></div>
       <div class="chart" id="dfr-scatter"></div>
@@ -218,6 +218,40 @@
     const r = await fetch(BASE + path + '?m=' + Math.floor(Date.now() / 60000), { cache: 'no-cache' });
     if (!r.ok) throw new Error('Could not load ' + BASE + path + ' (' + r.status + ').');
     return r.json();
+  }
+
+  // an election slider, as on Asking for Protection and Area Doesn't Vote: one ink rule, a red dot as the handle, a tick
+  // and a label per election, evenly spaced, with a native range input underneath (keys, touch, screen readers). Labels:
+  // the chosen election's, then the two ends, then each that keeps 6px from those written. gaps: election -> note, for
+  // elections without the figures shown (label struck through, still selectable, as the buttons were).
+  function slider(el, years, value, onPick, gaps = new Map()) {
+    const n = years.length, at = (i) => (n > 1 ? (100 * i) / (n - 1) : 0);
+    el.innerHTML = '<input type="range" min="0" max="' + (n - 1) + '" step="1" aria-label="' + esc(el.dataset.label || 'Election') + '">' +
+      '<div class="dfr-slider__ticks" aria-hidden="true">' + years.map((y, i) => '<span class="dfr-slider__tick' + (gaps.has(y) ? ' is-gap' : '') +
+        '" data-v="' + y + '" style="left:' + at(i) + '%"' + (gaps.has(y) ? ' title="' + esc(gaps.get(y)) + '"' : '') + '>' + y + '</span>').join('') + '</div>';
+    const input = el.querySelector('input'), ticks = [...el.querySelectorAll('.dfr-slider__tick')];
+    let cur = value, raf = 0;
+    const mark = (y) => {
+      const i = years.indexOf(y);
+      if (i >= 0 && +input.value !== i) input.value = String(i);
+      input.setAttribute('aria-valuetext', String(y) + (gaps.has(y) ? ', ' + gaps.get(y) : ''));
+      ticks.forEach((t, k) => t.classList.toggle('is-on', k === i));
+      const kept = [];
+      [i, 0, n - 1, ...years.keys()].filter((k, j, a) => k >= 0 && a.indexOf(k) === j).forEach((k) => {
+        const r = ticks[k].getBoundingClientRect(), fits = !kept.some((q) => r.left < q.right + 6 && r.right > q.left - 6);
+        if (fits) kept.push(r);
+        ticks[k].classList.toggle('is-off', !fits);
+      });
+    };
+    input.addEventListener('input', () => {
+      const y = years[+input.value];
+      mark(y);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => { if (y !== cur) { cur = y; onPick(y); } });
+    });
+    new ResizeObserver(() => mark(cur)).observe(el);
+    mark(value);
+    return { set: (y) => { cur = y; mark(y); } };
   }
 
   function onWidth(el, draw) {
@@ -752,21 +786,8 @@
       MAP.year = d3.max(MAP.files.filter((f) => f.ok), (f) => f.y);
       const asked = /^#counties-(\d{4})$/.exec(location.hash);
       if (asked && MAP.files.some((f) => f.ok && f.y === +asked[1])) MAP.year = +asked[1];
-      const seg = $('#year');
-      MAP.files.forEach((f) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.textContent = f.y;
-        if (!f.ok) { b.classList.add('is-off'); b.title = 'No county figures for the far right in ' + f.y; }
-        b.setAttribute('aria-pressed', String(f.y === MAP.year));
-        b.addEventListener('click', () => {
-          if (MAP.year === f.y) return;
-          MAP.year = f.y;
-          seg.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-          redraw();
-        });
-        seg.appendChild(b);
-      });
+      slider($('#year'), MAP.files.map((f) => f.y), MAP.year, (y) => { MAP.year = y; redraw(); },
+        new Map(MAP.files.filter((f) => !f.ok).map((f) => [f.y, 'no county figures for the far right'])));
       renderMapKey();
       const redraw = onWidth(el, () => drawMap(el));
     };
@@ -942,20 +963,7 @@
     const start = () => {
       if (started) return;
       started = true;
-      const seg = $('#tyear');
-      years.forEach((y) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.textContent = y;
-        b.setAttribute('aria-pressed', String(y === TOWN.year));
-        b.addEventListener('click', () => {
-          if (TOWN.year === y) return;
-          TOWN.year = y;
-          seg.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-          render();
-        });
-        seg.appendChild(b);
-      });
+      slider($('#tyear'), years, TOWN.year, (y) => { TOWN.year = y; render(); });
       $('#tkey').innerHTML = rampKey() +
         '<div class="dfr-key"><span><i class="dfr-sw dfr-sw--novote"></i>No result of its own</span><span><i class="dfr-sw dfr-sw--blank"></i>No voters</span></div>';
       const find = $('#tfind');
@@ -1093,13 +1101,8 @@
         b.addEventListener('click', () => { WHY.code = i.code; pick(segInd, i.code); redraw(); });
         segInd.appendChild(b);
       });
-      [...new Set(WHY.rows.map((r) => r.y))].sort().forEach((y) => {
-        const b = document.createElement('button');
-        b.type = 'button'; b.textContent = y; b.dataset.v = y;
-        b.addEventListener('click', () => { WHY.year = y; pick(segYear, y); redraw(); });
-        segYear.appendChild(b);
-      });
-      pick(segInd, WHY.code); pick(segYear, WHY.year);
+      slider(segYear, [...new Set(WHY.rows.map((r) => r.y))].sort(), WHY.year, (y) => { WHY.year = y; redraw(); });
+      pick(segInd, WHY.code);
       $('#corr').addEventListener('click', (ev) => {
         const tr = ev.target.closest('tr[data-code]');
         if (!tr) return;
